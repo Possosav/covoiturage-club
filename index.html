@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Covoiturage Club</title>
 
 <style>
-
 * {
   box-sizing: border-box;
 }
@@ -105,9 +103,9 @@ label {
 
 .child {
   background: #f3f5f7;
-  padding: 9px;
+  padding: 10px;
   border-radius: 9px;
-  margin-top: 7px;
+  margin-top: 8px;
 }
 
 .available {
@@ -147,6 +145,7 @@ label {
   align-items: center;
   justify-content: center;
   padding: 18px;
+  z-index: 1000;
 }
 
 .modal.open {
@@ -190,6 +189,47 @@ label {
   color: #667;
 }
 
+.top-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.top-actions button {
+  flex: 1;
+  min-width: 130px;
+}
+
+.edit-row {
+  display: flex;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.edit-row button {
+  flex: 1;
+  padding: 9px;
+  font-size: 13px;
+}
+
+.car-title {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.confirm-text {
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.warning {
+  background: #fff5d9;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 12px;
+}
+
 </style>
 </head>
 
@@ -197,20 +237,16 @@ label {
 
 <div class="container">
 
-<!-- ACCUEIL -->
+<!-- ==================================================
+     ACCUEIL
+================================================== -->
 
 <div id="home">
 
   <div class="header">
-
     <h1>🚗 Covoiturage du club</h1>
-
-    <div>
-      Les trajets des entraînements
-    </div>
-
+    <div>Les trajets des entraînements</div>
   </div>
-
 
   <div class="card">
 
@@ -233,20 +269,19 @@ label {
 </div>
 
 
-<!-- PAGE EVENEMENT -->
+<!-- ==================================================
+     PAGE EVENEMENT
+================================================== -->
 
-<div
-  id="eventPage"
-  class="hidden">
+<div id="eventPage" class="hidden">
 
   <button
     class="secondary"
     onclick="goHome()">
 
-    ← Retour
+    ← Retour aux événements
 
   </button>
-
 
   <div class="header">
 
@@ -255,6 +290,26 @@ label {
     <div id="eventDate"></div>
 
     <div id="eventTime"></div>
+
+    <div class="top-actions">
+
+      <button
+        class="secondary"
+        onclick="openEditEvent()">
+
+        ✏️ Modifier
+
+      </button>
+
+      <button
+        class="danger"
+        onclick="askDeleteEvent1()">
+
+        🗑️ Supprimer
+
+      </button>
+
+    </div>
 
   </div>
 
@@ -283,7 +338,6 @@ label {
 
     </button>
 
-
     <button
       id="retourTab"
       class="tab"
@@ -296,8 +350,9 @@ label {
   </div>
 
 
-  <div
-    id="allerSection">
+  <!-- ALLER -->
+
+  <div id="allerSection">
 
     <div class="card">
 
@@ -318,9 +373,9 @@ label {
   </div>
 
 
-  <div
-    id="retourSection"
-    class="hidden">
+  <!-- RETOUR -->
+
+  <div id="retourSection" class="hidden">
 
     <div class="card">
 
@@ -365,7 +420,9 @@ label {
 </div>
 
 
-<!-- MODALE -->
+<!-- ==================================================
+     MODALE
+================================================== -->
 
 <div
   id="modal"
@@ -384,9 +441,9 @@ label {
 
 <script>
 
-/* =====================================================
+/* ==================================================
    SUPABASE
-===================================================== */
+================================================== */
 
 const SUPABASE_URL =
 "https://dyiwqnnhujxndkqdjznn.supabase.co";
@@ -395,91 +452,56 @@ const SUPABASE_KEY =
 "sb_publishable_Nk1KPJ3rtiDSh0yyEl2ynA_6RUpfqqB";
 
 
-/* =====================================================
+/* ==================================================
    VARIABLES
-===================================================== */
+================================================== */
 
 let currentEvent = null;
-
 let currentDirection = "aller";
 
 
-/* =====================================================
-   COMMUNICATION SUPABASE
-===================================================== */
+/* ==================================================
+   API SUPABASE
+================================================== */
 
-async function apiRequest(
-  endpoint,
-  options = {}
-) {
+async function apiRequest(endpoint, options = {}) {
 
-  const response =
-    await fetch(
-      SUPABASE_URL +
-      "/rest/v1/" +
-      endpoint,
-      {
+  const response = await fetch(
+    SUPABASE_URL + "/rest/v1/" + endpoint,
+    {
+      method: options.method || "GET",
 
-        method:
-          options.method ||
-          "GET",
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": options.prefer || "return=representation"
+      },
 
-        headers: {
-
-          "apikey":
-            SUPABASE_KEY,
-
-          "Authorization":
-            "Bearer " +
-            SUPABASE_KEY,
-
-          "Content-Type":
-            "application/json",
-
-          "Prefer":
-            options.prefer ||
-            "return=representation"
-
-        },
-
-        body:
-          options.body
-            ? JSON.stringify(
-                options.body
-              )
-            : undefined
-
-      }
-    );
-
+      body: options.body
+        ? JSON.stringify(options.body)
+        : undefined
+    }
+  );
 
   if (!response.ok) {
 
-    const message =
-      await response.text();
+    const message = await response.text();
 
     throw new Error(
-      message ||
-      "Erreur Supabase"
+      message || "Erreur Supabase"
     );
-
   }
 
+  const text = await response.text();
 
-  const text =
-    await response.text();
-
-
-  return text
-    ? JSON.parse(text)
-    : [];
-
+  return text ? JSON.parse(text) : [];
 }
 
 
-/* =====================================================
-   GENERER UN CODE
-===================================================== */
+/* ==================================================
+   CODE EVENEMENT
+================================================== */
 
 function makeCode() {
 
@@ -488,42 +510,30 @@ function makeCode() {
 
   let code = "";
 
-  for (
-    let i = 0;
-    i < 6;
-    i++
-  ) {
+  for (let i = 0; i < 6; i++) {
 
-    code +=
-      chars[
-        Math.floor(
-          Math.random() *
-          chars.length
-        )
-      ];
+    code += chars[
+      Math.floor(
+        Math.random() * chars.length
+      )
+    ];
 
   }
 
   return code;
-
 }
 
 
-/* =====================================================
-   CHARGER LES EVENEMENTS
-===================================================== */
+/* ==================================================
+   CHARGER EVENEMENTS
+================================================== */
 
 async function loadEvents() {
 
   const box =
-    document.getElementById(
-      "events"
-    );
+    document.getElementById("events");
 
-
-  box.innerHTML =
-    "Chargement...";
-
+  box.innerHTML = "Chargement...";
 
   try {
 
@@ -532,101 +542,74 @@ async function loadEvents() {
         "events?select=*&order=date.asc"
       );
 
-
-    if (
-      events.length === 0
-    ) {
+    if (events.length === 0) {
 
       box.innerHTML =
         "<p>Aucun événement pour le moment.</p>";
 
       return;
-
     }
-
 
     box.innerHTML = "";
 
+    events.forEach(event => {
 
-    events.forEach(
-      event => {
+      const item =
+        document.createElement("div");
 
-        const item =
-          document.createElement(
-            "div"
-          );
+      item.className = "event";
 
+      item.innerHTML = `
 
-        item.className =
-          "event";
+        <h3>
+          🏐 ${safe(event.name)}
+        </h3>
 
+        <p>
+          📅 ${formatDate(event.date)}
+          ${
+            event.time
+              ? " à " + safe(event.time)
+              : ""
+          }
+        </p>
 
-        item.innerHTML = `
+        <p>
+          🚗
+          ${safe(event.aller_depart)}
+          →
+          ${safe(event.aller_arrivee)}
+        </p>
 
-          <h3>
-            🏐 ${safe(event.name)}
-          </h3>
+        <button
+          class="primary"
+          onclick="openEventPage('${event.code}')">
 
-          <p>
-            📅 ${formatDate(event.date)}
-            ${
-              event.time
-                ? " à " +
-                  safe(event.time)
-                : ""
-            }
-          </p>
+          Ouvrir
 
-          <p>
-            🚗
-            ${safe(event.aller_depart)}
-            →
-            ${safe(event.aller_arrivee)}
-          </p>
+        </button>
 
-          <button
-            class="primary"
-            onclick="openEventPage('${event.code}')">
+      `;
 
-            Ouvrir
+      box.appendChild(item);
 
-          </button>
-
-        `;
-
-
-        box.appendChild(
-          item
-        );
-
-      }
-    );
-
+    });
 
   } catch(error) {
 
     console.error(error);
 
     box.innerHTML = `
-
-      <p>
-        ❌ Impossible de charger les événements.
-      </p>
-
-      <p class="small">
-        ${safe(error.message)}
-      </p>
-
+      <p>❌ Impossible de charger les événements.</p>
+      <p class="small">${safe(error.message)}</p>
     `;
-
   }
-
 }
 
 
-/* =====================================================
-   NOUVEL EVENEMENT
-===================================================== */
+/* ==================================================
+   CREER EVENEMENT
+================================================== */
 
 function openNewEvent() {
 
@@ -636,27 +619,21 @@ function openNewEvent() {
 
     `
 
-    <label>
-      Nom de l'événement
-    </label>
+    <label>Nom de l'événement</label>
 
     <input
       id="eventNameInput"
       value="Entraînement">
 
 
-    <label>
-      Date
-    </label>
+    <label>Date</label>
 
     <input
       id="eventDateInput"
       type="date">
 
 
-    <label>
-      Heure
-    </label>
+    <label>Heure</label>
 
     <input
       id="eventTimeInput"
@@ -667,18 +644,13 @@ function openNewEvent() {
 
       <h3>🚗 Aller</h3>
 
-      <label>
-        Départ
-      </label>
+      <label>Départ</label>
 
       <input
         id="allerDeparture"
         value="St-Georges-sur-Loire">
 
-
-      <label>
-        Arrivée
-      </label>
+      <label>Arrivée</label>
 
       <input
         id="allerArrival"
@@ -691,18 +663,13 @@ function openNewEvent() {
 
       <h3>🔄 Retour</h3>
 
-      <label>
-        Départ
-      </label>
+      <label>Départ</label>
 
       <input
         id="returnDeparture"
         value="La Possonnière">
 
-
-      <label>
-        Arrivée
-      </label>
+      <label>Arrivée</label>
 
       <input
         id="returnArrival"
@@ -721,7 +688,6 @@ function openNewEvent() {
 
       </button>
 
-
       <button
         class="primary"
         onclick="saveNewEvent()">
@@ -733,77 +699,46 @@ function openNewEvent() {
     </div>
 
     `
-
   );
-
 }
 
-
-/* =====================================================
-   ENREGISTRER NOUVEL EVENEMENT
-===================================================== */
 
 async function saveNewEvent() {
 
   const name =
-    document
-      .getElementById(
-        "eventNameInput"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "eventNameInput"
+    ).value.trim();
 
   const date =
-    document
-      .getElementById(
-        "eventDateInput"
-      )
-      .value;
-
+    document.getElementById(
+      "eventDateInput"
+    ).value;
 
   const time =
-    document
-      .getElementById(
-        "eventTimeInput"
-      )
-      .value;
-
+    document.getElementById(
+      "eventTimeInput"
+    ).value;
 
   const allerDeparture =
-    document
-      .getElementById(
-        "allerDeparture"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "allerDeparture"
+    ).value.trim();
 
   const allerArrival =
-    document
-      .getElementById(
-        "allerArrival"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "allerArrival"
+    ).value.trim();
 
   const returnDeparture =
-    document
-      .getElementById(
-        "returnDeparture"
-      )
-      .value
-      .trim();
-
+    document.getElementById(
+      "returnDeparture"
+    ).value.trim();
 
   const returnArrival =
-    document
-      .getElementById(
-        "returnArrival"
-      )
-      .value
-      .trim();
+    document.getElementById(
+      "returnArrival"
+    ).value.trim();
 
 
   if (
@@ -820,12 +755,7 @@ async function saveNewEvent() {
     );
 
     return;
-
   }
-
-
-  const code =
-    makeCode();
 
 
   try {
@@ -834,23 +764,17 @@ async function saveNewEvent() {
       await apiRequest(
         "events",
         {
-
-          method:
-            "POST",
+          method: "POST",
 
           body: {
 
-            code:
-              code,
+            code: makeCode(),
 
-            name:
-              name,
+            name: name,
 
-            date:
-              date,
+            date: date,
 
-            time:
-              time,
+            time: time,
 
             aller_depart:
               allerDeparture,
@@ -863,58 +787,266 @@ async function saveNewEvent() {
 
             retour_arrivee:
               returnArrival
-
           }
-
         }
       );
 
 
-    if (
-      !result ||
-      !result.length
-    ) {
+    if (!result.length) {
 
       throw new Error(
-        "Supabase n'a pas retourné l'événement créé."
+        "L'événement n'a pas été créé."
       );
-
     }
 
 
     closeModal();
 
-
     await openEventPage(
-      code
+      result[0].code
     );
 
 
   } catch(error) {
 
-    console.error(
-      "CREATE EVENT ERROR:",
-      error
-    );
-
+    console.error(error);
 
     alert(
       "❌ Erreur lors de la création :\n\n" +
       error.message
     );
-
   }
-
 }
 
 
-/* =====================================================
-   OUVRIR EVENEMENT
-===================================================== */
+/* ==================================================
+   MODIFIER EVENEMENT
+================================================== */
 
-async function openEventPage(
-  code
-) {
+function openEditEvent() {
+
+  showModal(
+
+    "✏️ Modifier l'événement",
+
+    `
+
+    <label>Nom de l'événement</label>
+
+    <input
+      id="editEventName"
+      value="${safe(currentEvent.name)}">
+
+
+    <label>Date</label>
+
+    <input
+      id="editEventDate"
+      type="date"
+      value="${safe(currentEvent.date)}">
+
+
+    <label>Heure</label>
+
+    <input
+      id="editEventTime"
+      type="time"
+      value="${safe(currentEvent.time || "")}">
+
+
+    <div class="route">
+
+      <h3>🚗 Aller</h3>
+
+      <label>Départ</label>
+
+      <input
+        id="editAllerDeparture"
+        value="${safe(currentEvent.aller_depart)}">
+
+      <label>Arrivée</label>
+
+      <input
+        id="editAllerArrival"
+        value="${safe(currentEvent.aller_arrivee)}">
+
+    </div>
+
+
+    <div class="route">
+
+      <h3>🔄 Retour</h3>
+
+      <label>Départ</label>
+
+      <input
+        id="editReturnDeparture"
+        value="${safe(currentEvent.retour_depart)}">
+
+      <label>Arrivée</label>
+
+      <input
+        id="editReturnArrival"
+        value="${safe(currentEvent.retour_arrivee)}">
+
+    </div>
+
+
+    <div class="actions">
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+
+        Annuler
+
+      </button>
+
+      <button
+        class="primary"
+        onclick="confirmEditEvent()">
+
+        Enregistrer
+
+      </button>
+
+    </div>
+
+    `
+  );
+}
+
+
+/* ==================================================
+   CONFIRMATION MODIFICATION EVENEMENT
+================================================== */
+
+function confirmEditEvent() {
+
+  const ok =
+    confirm(
+      "Voulez-vous enregistrer les modifications de cet événement ?"
+    );
+
+  if (!ok) return;
+
+  saveEditEvent();
+}
+
+
+async function saveEditEvent() {
+
+  const data = {
+
+    name:
+      document.getElementById(
+        "editEventName"
+      ).value.trim(),
+
+    date:
+      document.getElementById(
+        "editEventDate"
+      ).value,
+
+    time:
+      document.getElementById(
+        "editEventTime"
+      ).value,
+
+    aller_depart:
+      document.getElementById(
+        "editAllerDeparture"
+      ).value.trim(),
+
+    aller_arrivee:
+      document.getElementById(
+        "editAllerArrival"
+      ).value.trim(),
+
+    retour_depart:
+      document.getElementById(
+        "editReturnDeparture"
+      ).value.trim(),
+
+    retour_arrivee:
+      document.getElementById(
+        "editReturnArrival"
+      ).value.trim()
+  };
+
+
+  if (
+    !data.name ||
+    !data.date ||
+    !data.aller_depart ||
+    !data.aller_arrivee ||
+    !data.retour_depart ||
+    !data.retour_arrivee
+  ) {
+
+    alert(
+      "Merci de remplir tous les champs."
+    );
+
+    return;
+  }
+
+
+  try {
+
+    await apiRequest(
+      "events?id=eq." +
+      encodeURIComponent(
+        currentEvent.id
+      ),
+      {
+        method: "PATCH",
+        body: data
+      }
+    );
+
+
+    closeModal();
+
+
+    const updated =
+      await apiRequest(
+        "events?id=eq." +
+        encodeURIComponent(
+          currentEvent.id
+        ) +
+        "&select=*"
+      );
+
+
+    currentEvent =
+      updated[0];
+
+
+    renderEvent();
+
+    await loadEvents();
+
+    await loadCars();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de modifier l'événement :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   OUVRIR EVENEMENT
+================================================== */
+
+async function openEventPage(code) {
 
   try {
 
@@ -926,16 +1058,13 @@ async function openEventPage(
       );
 
 
-    if (
-      !events.length
-    ) {
+    if (!events.length) {
 
       alert(
         "Événement introuvable."
       );
 
       return;
-
     }
 
 
@@ -943,41 +1072,28 @@ async function openEventPage(
       events[0];
 
 
-    const newUrl =
+    history.pushState(
+      {},
+      "",
       window.location.pathname +
       "?event=" +
       encodeURIComponent(
         currentEvent.code
-      );
-
-
-    history.pushState(
-      {},
-      "",
-      newUrl
+      )
     );
 
 
     document
-      .getElementById(
-        "home"
-      )
-      .classList.add(
-        "hidden"
-      );
+      .getElementById("home")
+      .classList.add("hidden");
 
 
     document
-      .getElementById(
-        "eventPage"
-      )
-      .classList.remove(
-        "hidden"
-      );
+      .getElementById("eventPage")
+      .classList.remove("hidden");
 
 
     renderEvent();
-
 
     await loadCars();
 
@@ -990,89 +1106,74 @@ async function openEventPage(
       "❌ Impossible d'ouvrir l'événement :\n\n" +
       error.message
     );
-
   }
-
 }
 
 
-/* =====================================================
+/* ==================================================
    AFFICHER EVENEMENT
-===================================================== */
+================================================== */
 
 function renderEvent() {
 
-  document
-    .getElementById(
-      "eventName"
-    )
-    .textContent =
-      "🏐 " +
-      currentEvent.name;
+  document.getElementById(
+    "eventName"
+  ).textContent =
+    "🏐 " + currentEvent.name;
 
 
-  document
-    .getElementById(
-      "eventDate"
-    )
-    .textContent =
-      "📅 " +
-      formatDate(
-        currentEvent.date
-      );
+  document.getElementById(
+    "eventDate"
+  ).textContent =
+    "📅 " +
+    formatDate(
+      currentEvent.date
+    );
 
 
-  document
-    .getElementById(
-      "eventTime"
-    )
-    .textContent =
-      currentEvent.time
-        ? "🕐 " +
-          currentEvent.time
-        : "";
+  document.getElementById(
+    "eventTime"
+  ).textContent =
+    currentEvent.time
+      ? "🕐 " + currentEvent.time
+      : "";
 
 
-  document
-    .getElementById(
-      "allerRoute"
-    )
-    .textContent =
-      currentEvent.aller_depart +
-      " → " +
-      currentEvent.aller_arrivee;
+  document.getElementById(
+    "allerRoute"
+  ).textContent =
+    currentEvent.aller_depart +
+    " → " +
+    currentEvent.aller_arrivee;
 
 
-  document
-    .getElementById(
-      "retourRoute"
-    )
-    .textContent =
-      currentEvent.retour_depart +
-      " → " +
-      currentEvent.retour_arrivee;
+  document.getElementById(
+    "retourRoute"
+  ).textContent =
+    currentEvent.retour_depart +
+    " → " +
+    currentEvent.retour_arrivee;
 
 
-  document
-    .getElementById(
-      "eventLink"
-    )
-    .textContent =
-      window.location.href;
-
+  document.getElementById(
+    "eventLink"
+  ).textContent =
+    window.location.href;
 }
 
 
-/* =====================================================
+/* ==================================================
    CHARGER VOITURES
-===================================================== */
+================================================== */
 
 async function loadCars() {
 
   const cars =
     await apiRequest(
       "cars?event_id=eq." +
-      currentEvent.id +
+      encodeURIComponent(
+        currentEvent.id
+      ) +
       "&select=*&order=created_at.asc"
     );
 
@@ -1083,18 +1184,15 @@ async function loadCars() {
     );
 
 
-  cars.forEach(
-    car => {
+  cars.forEach(car => {
 
-      car.children =
-        children.filter(
-          child =>
-            child.car_id ===
-            car.id
-        );
+    car.children =
+      children.filter(
+        child =>
+          child.car_id === car.id
+      );
 
-    }
-  );
+  });
 
 
   renderCars(
@@ -1102,18 +1200,16 @@ async function loadCars() {
     cars
   );
 
-
   renderCars(
     "retour",
     cars
   );
-
 }
 
 
-/* =====================================================
+/* ==================================================
    AFFICHER VOITURES
-===================================================== */
+================================================== */
 
 function renderCars(
   direction,
@@ -1122,8 +1218,7 @@ function renderCars(
 
   const box =
     document.getElementById(
-      direction +
-      "Cars"
+      direction + "Cars"
     );
 
 
@@ -1133,139 +1228,179 @@ function renderCars(
   const filtered =
     cars.filter(
       car =>
-        car.direction ===
-        direction
+        car.direction === direction
     );
 
 
-  if (
-    filtered.length === 0
-  ) {
+  if (!filtered.length) {
 
     box.innerHTML =
       "<p>Aucune voiture pour le moment.</p>";
 
     return;
-
   }
 
 
-  filtered.forEach(
-    car => {
+  filtered.forEach(car => {
 
-      const children =
-        car.children ||
-        [];
+    const children =
+      car.children || [];
 
 
-      const available =
-        car.places -
-        children.length;
+    const available =
+      car.places -
+      children.length;
 
 
-      const item =
-        document.createElement(
-          "div"
-        );
+    const item =
+      document.createElement(
+        "div"
+      );
 
 
-      item.className =
-        "car";
+    item.className =
+      "car";
 
 
-      let html = `
+    let html = `
 
-        <strong>
-          🚗 ${safe(car.driver_name)}
-        </strong>
+      <div class="car-title">
+        🚗 <strong>${safe(car.driver_name)}</strong>
+      </div>
 
-        <div>
-          ${car.places} place(s)
+      <div>
+        ${car.places} place(s)
+      </div>
+
+    `;
+
+
+    children.forEach(child => {
+
+      html += `
+
+        <div class="child">
+
+          👦 ${safe(child.name)}
+
+          <div class="edit-row">
+
+            <button
+              class="secondary"
+              onclick="openEditChild(
+                '${child.id}'
+              )">
+
+              ✏️ Modifier
+
+            </button>
+
+            <button
+              class="danger"
+              onclick="askDeleteChild1(
+                '${child.id}'
+              )">
+
+              🗑️ Supprimer
+
+            </button>
+
+          </div>
+
         </div>
 
       `;
 
-
-      children.forEach(
-        child => {
-
-          html += `
-
-            <div class="child">
-              👦 ${safe(child.name)}
-            </div>
-
-          `;
-
-        }
-      );
+    });
 
 
-      if (
-        available > 0
-      ) {
+    if (available > 0) {
 
-        html += `
+      html += `
 
-          <div class="available">
+        <div class="available">
 
-            🟢
-            ${available}
-            place(s) disponible(s)
+          🟢
+          ${available}
+          place(s) disponible(s)
 
-          </div>
+        </div>
 
+        <button
+          class="secondary full"
+          onclick="openNewChild(
+            '${car.id}'
+          )">
 
-          <button
-            class="secondary full"
-            onclick="openNewChild('${car.id}')">
+          + Ajouter un enfant
 
-            + Ajouter un enfant
+        </button>
 
-          </button>
+      `;
 
-        `;
+    } else {
 
-      } else {
+      html += `
 
-        html += `
+        <div
+          style="
+            margin-top:10px;
+            color:#c62828;
+            font-weight:bold">
 
-          <div
-            style="
-              margin-top:10px;
-              color:#c62828;
-              font-weight:bold">
+          🔴 Voiture complète
 
-            🔴 Voiture complète
+        </div>
 
-          </div>
-
-        `;
-
-      }
-
-
-      item.innerHTML =
-        html;
-
-
-      box.appendChild(
-        item
-      );
+      `;
 
     }
-  );
 
+
+    html += `
+
+      <div class="edit-row">
+
+        <button
+          class="secondary"
+          onclick="openEditCar(
+            '${car.id}'
+          )">
+
+          ✏️ Modifier la voiture
+
+        </button>
+
+        <button
+          class="danger"
+          onclick="askDeleteCar1(
+            '${car.id}'
+          )">
+
+          🗑️ Supprimer
+
+        </button>
+
+      </div>
+
+    `;
+
+
+    item.innerHTML =
+      html;
+
+
+    box.appendChild(item);
+
+  });
 }
 
 
-/* =====================================================
+/* ==================================================
    NOUVELLE VOITURE
-===================================================== */
+================================================== */
 
-function openNewCar(
-  direction
-) {
+function openNewCar(direction) {
 
   currentDirection =
     direction;
@@ -1310,7 +1445,6 @@ function openNewCar(
 
       </button>
 
-
       <button
         class="primary"
         onclick="saveNewCar()">
@@ -1322,34 +1456,27 @@ function openNewCar(
     </div>
 
     `
-
   );
-
 }
 
 
-/* =====================================================
+/* ==================================================
    ENREGISTRER VOITURE
-===================================================== */
+================================================== */
 
 async function saveNewCar() {
 
   const driver =
-    document
-      .getElementById(
-        "driverInput"
-      )
-      .value
-      .trim();
+    document.getElementById(
+      "driverInput"
+    ).value.trim();
 
 
   const places =
     Number(
-      document
-        .getElementById(
-          "placesInput"
-        )
-        .value
+      document.getElementById(
+        "placesInput"
+      ).value
     );
 
 
@@ -1360,7 +1487,6 @@ async function saveNewCar() {
     );
 
     return;
-
   }
 
 
@@ -1374,18 +1500,7 @@ async function saveNewCar() {
     );
 
     return;
-
   }
-
-
-  const ownerCode =
-    String(
-      Math.floor(
-        1000 +
-        Math.random() *
-        9000
-      )
-    );
 
 
   try {
@@ -1393,9 +1508,7 @@ async function saveNewCar() {
     await apiRequest(
       "cars",
       {
-
-        method:
-          "POST",
+        method: "POST",
 
         body: {
 
@@ -1409,28 +1522,13 @@ async function saveNewCar() {
             driver,
 
           places:
-            places,
-
-          owner_code:
-            ownerCode
-
+            places
         }
-
       }
     );
 
 
     closeModal();
-
-
-    alert(
-      "✅ Voiture ajoutée !\n\n" +
-      "Votre code personnel est : " +
-      ownerCode +
-      "\n\n" +
-      "Conservez-le pour gérer votre voiture."
-    );
-
 
     await loadCars();
 
@@ -1443,19 +1541,177 @@ async function saveNewCar() {
       "❌ Impossible d'ajouter la voiture :\n\n" +
       error.message
     );
-
   }
-
 }
 
 
-/* =====================================================
-   NOUVEL ENFANT
-===================================================== */
+/* ==================================================
+   MODIFIER VOITURE
+================================================== */
 
-function openNewChild(
-  carId
-) {
+async function openEditCar(carId) {
+
+  try {
+
+    const cars =
+      await apiRequest(
+        "cars?id=eq." +
+        encodeURIComponent(carId) +
+        "&select=*"
+      );
+
+
+    if (!cars.length) {
+
+      alert(
+        "Voiture introuvable."
+      );
+
+      return;
+    }
+
+
+    const car = cars[0];
+
+
+    showModal(
+
+      "✏️ Modifier la voiture",
+
+      `
+
+      <label>
+        Nom et prénom
+      </label>
+
+      <input
+        id="editCarDriver"
+        value="${safe(car.driver_name)}">
+
+
+      <label>
+        Nombre de places
+      </label>
+
+      <input
+        id="editCarPlaces"
+        type="number"
+        min="1"
+        max="8"
+        value="${car.places}">
+
+
+      <div class="actions">
+
+        <button
+          class="secondary"
+          onclick="closeModal()">
+
+          Annuler
+
+        </button>
+
+        <button
+          class="primary"
+          onclick="saveEditCar(
+            '${car.id}'
+          )">
+
+          Enregistrer
+
+        </button>
+
+      </div>
+
+      `
+    );
+
+  } catch(error) {
+
+    alert(
+      "❌ " + error.message
+    );
+  }
+}
+
+
+async function saveEditCar(carId) {
+
+  const driver =
+    document.getElementById(
+      "editCarDriver"
+    ).value.trim();
+
+
+  const places =
+    Number(
+      document.getElementById(
+        "editCarPlaces"
+      ).value
+    );
+
+
+  if (!driver || places < 1) {
+
+    alert(
+      "Merci de renseigner correctement les informations."
+    );
+
+    return;
+  }
+
+
+  const ok =
+    confirm(
+      "Voulez-vous enregistrer les modifications de cette voiture ?"
+    );
+
+
+  if (!ok) return;
+
+
+  try {
+
+    await apiRequest(
+      "cars?id=eq." +
+      encodeURIComponent(carId),
+      {
+        method: "PATCH",
+
+        body: {
+
+          driver_name:
+            driver,
+
+          places:
+            places
+        }
+      }
+    );
+
+
+    closeModal();
+
+    await loadCars();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de modifier la voiture :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   NOUVEL ENFANT
+================================================== */
+
+function openNewChild(carId) {
 
   showModal(
 
@@ -1482,10 +1738,11 @@ function openNewChild(
 
       </button>
 
-
       <button
         class="primary"
-        onclick="saveNewChild('${carId}')">
+        onclick="saveNewChild(
+          '${carId}'
+        )">
 
         Ajouter
 
@@ -1494,27 +1751,20 @@ function openNewChild(
     </div>
 
     `
-
   );
-
 }
 
 
-/* =====================================================
+/* ==================================================
    ENREGISTRER ENFANT
-===================================================== */
+================================================== */
 
-async function saveNewChild(
-  carId
-) {
+async function saveNewChild(carId) {
 
   const name =
-    document
-      .getElementById(
-        "childInput"
-      )
-      .value
-      .trim();
+    document.getElementById(
+      "childInput"
+    ).value.trim();
 
 
   if (!name) {
@@ -1524,7 +1774,6 @@ async function saveNewChild(
     );
 
     return;
-
   }
 
 
@@ -1533,9 +1782,7 @@ async function saveNewChild(
     await apiRequest(
       "children",
       {
-
-        method:
-          "POST",
+        method: "POST",
 
         body: {
 
@@ -1544,15 +1791,12 @@ async function saveNewChild(
 
           name:
             name
-
         }
-
       }
     );
 
 
     closeModal();
-
 
     await loadCars();
 
@@ -1565,15 +1809,481 @@ async function saveNewChild(
       "❌ Impossible d'ajouter l'enfant :\n\n" +
       error.message
     );
-
   }
-
 }
 
 
-/* =====================================================
-   CHANGER ALLER / RETOUR
-===================================================== */
+/* ==================================================
+   MODIFIER ENFANT
+================================================== */
+
+async function openEditChild(
+  childId
+) {
+
+  try {
+
+    const children =
+      await apiRequest(
+        "children?id=eq." +
+        encodeURIComponent(childId) +
+        "&select=*"
+      );
+
+
+    if (!children.length) {
+
+      alert(
+        "Enfant introuvable."
+      );
+
+      return;
+    }
+
+
+    const child =
+      children[0];
+
+
+    showModal(
+
+      "✏️ Modifier l'enfant",
+
+      `
+
+      <label>
+        Prénom et nom
+      </label>
+
+      <input
+        id="editChildName"
+        value="${safe(child.name)}">
+
+
+      <div class="actions">
+
+        <button
+          class="secondary"
+          onclick="closeModal()">
+
+          Annuler
+
+        </button>
+
+        <button
+          class="primary"
+          onclick="saveEditChild(
+            '${child.id}'
+          )">
+
+          Enregistrer
+
+        </button>
+
+      </div>
+
+      `
+    );
+
+
+  } catch(error) {
+
+    alert(
+      "❌ " + error.message
+    );
+  }
+}
+
+
+async function saveEditChild(
+  childId
+) {
+
+  const name =
+    document.getElementById(
+      "editChildName"
+    ).value.trim();
+
+
+  if (!name) {
+
+    alert(
+      "Merci d'indiquer un nom."
+    );
+
+    return;
+  }
+
+
+  const ok =
+    confirm(
+      "Voulez-vous enregistrer cette modification ?"
+    );
+
+
+  if (!ok) return;
+
+
+  try {
+
+    await apiRequest(
+      "children?id=eq." +
+      encodeURIComponent(childId),
+      {
+        method: "PATCH",
+
+        body: {
+
+          name:
+            name
+        }
+      }
+    );
+
+
+    closeModal();
+
+    await loadCars();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de modifier l'enfant :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   SUPPRESSION ENFANT - CONFIRMATION 1
+================================================== */
+
+function askDeleteChild1(
+  childId
+) {
+
+  const first =
+    confirm(
+      "Voulez-vous vraiment supprimer cet enfant ?"
+    );
+
+
+  if (!first) return;
+
+
+  askDeleteChild2(
+    childId
+  );
+}
+
+
+/* ==================================================
+   SUPPRESSION ENFANT - CONFIRMATION 2
+================================================== */
+
+function askDeleteChild2(
+  childId
+) {
+
+  const second =
+    confirm(
+      "⚠️ Attention : cette suppression est définitive.\n\nÊtes-vous absolument sûr de vouloir supprimer cet enfant ?"
+    );
+
+
+  if (!second) return;
+
+
+  deleteChild(
+    childId
+  );
+}
+
+
+async function deleteChild(
+  childId
+) {
+
+  try {
+
+    await apiRequest(
+      "children?id=eq." +
+      encodeURIComponent(childId),
+      {
+        method: "DELETE",
+        prefer: "return=minimal"
+      }
+    );
+
+
+    await loadCars();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de supprimer l'enfant :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   SUPPRESSION VOITURE - CONFIRMATION 1
+================================================== */
+
+function askDeleteCar1(
+  carId
+) {
+
+  const first =
+    confirm(
+      "Voulez-vous vraiment supprimer cette voiture ?"
+    );
+
+
+  if (!first) return;
+
+
+  askDeleteCar2(
+    carId
+  );
+}
+
+
+/* ==================================================
+   SUPPRESSION VOITURE - CONFIRMATION 2
+================================================== */
+
+function askDeleteCar2(
+  carId
+) {
+
+  const second =
+    confirm(
+      "⚠️ Attention : la voiture et les enfants inscrits dedans seront supprimés.\n\nÊtes-vous absolument sûr ?"
+    );
+
+
+  if (!second) return;
+
+
+  deleteCar(
+    carId
+  );
+}
+
+
+async function deleteCar(
+  carId
+) {
+
+  try {
+
+    /*
+      On supprime d'abord les enfants
+      puis la voiture.
+    */
+
+    await apiRequest(
+      "children?car_id=eq." +
+      encodeURIComponent(carId),
+      {
+        method: "DELETE",
+        prefer: "return=minimal"
+      }
+    );
+
+
+    await apiRequest(
+      "cars?id=eq." +
+      encodeURIComponent(carId),
+      {
+        method: "DELETE",
+        prefer: "return=minimal"
+      }
+    );
+
+
+    await loadCars();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de supprimer la voiture :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   SUPPRESSION EVENEMENT - CONFIRMATION 1
+================================================== */
+
+function askDeleteEvent1() {
+
+  const first =
+    confirm(
+      "Voulez-vous vraiment supprimer cet événement ?"
+    );
+
+
+  if (!first) return;
+
+
+  askDeleteEvent2();
+}
+
+
+/* ==================================================
+   SUPPRESSION EVENEMENT - CONFIRMATION 2
+================================================== */
+
+function askDeleteEvent2() {
+
+  const second =
+    confirm(
+      "⚠️ Attention : cet événement, ses voitures et les enfants inscrits seront supprimés.\n\nÊtes-vous absolument sûr ?"
+    );
+
+
+  if (!second) return;
+
+
+  deleteEvent();
+}
+
+
+/* ==================================================
+   SUPPRIMER EVENEMENT
+================================================== */
+
+async function deleteEvent() {
+
+  try {
+
+    /*
+      On récupère les voitures
+      de l'événement.
+    */
+
+    const cars =
+      await apiRequest(
+        "cars?event_id=eq." +
+        encodeURIComponent(
+          currentEvent.id
+        ) +
+        "&select=id"
+      );
+
+
+    /*
+      Suppression des enfants
+      de chaque voiture.
+    */
+
+    for (
+      const car of cars
+    ) {
+
+      await apiRequest(
+        "children?car_id=eq." +
+        encodeURIComponent(car.id),
+        {
+          method: "DELETE",
+          prefer: "return=minimal"
+        }
+      );
+
+    }
+
+
+    /*
+      Suppression des voitures.
+    */
+
+    await apiRequest(
+      "cars?event_id=eq." +
+      encodeURIComponent(
+        currentEvent.id
+      ),
+      {
+        method: "DELETE",
+        prefer: "return=minimal"
+      }
+    );
+
+
+    /*
+      Suppression de l'événement.
+    */
+
+    await apiRequest(
+      "events?id=eq." +
+      encodeURIComponent(
+        currentEvent.id
+      ),
+      {
+        method: "DELETE",
+        prefer: "return=minimal"
+      }
+    );
+
+
+    currentEvent = null;
+
+
+    history.pushState(
+      {},
+      "",
+      window.location.pathname
+    );
+
+
+    document
+      .getElementById("eventPage")
+      .classList.add("hidden");
+
+
+    document
+      .getElementById("home")
+      .classList.remove("hidden");
+
+
+    await loadEvents();
+
+
+    alert(
+      "✅ L'événement a été supprimé."
+    );
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de supprimer l'événement :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   ALLER / RETOUR
+================================================== */
 
 function changeDirection(
   direction
@@ -1583,9 +2293,8 @@ function changeDirection(
     direction;
 
 
-  const aller =
-    direction ===
-    "aller";
+  const isAller =
+    direction === "aller";
 
 
   document
@@ -1594,7 +2303,7 @@ function changeDirection(
     )
     .classList.toggle(
       "hidden",
-      !aller
+      !isAller
     );
 
 
@@ -1604,7 +2313,7 @@ function changeDirection(
     )
     .classList.toggle(
       "hidden",
-      aller
+      isAller
     );
 
 
@@ -1614,7 +2323,7 @@ function changeDirection(
     )
     .classList.toggle(
       "active",
-      aller
+      isAller
     );
 
 
@@ -1624,15 +2333,14 @@ function changeDirection(
     )
     .classList.toggle(
       "active",
-      !aller
+      !isAller
     );
-
 }
 
 
-/* =====================================================
+/* ==================================================
    MODALE
-===================================================== */
+================================================== */
 
 function showModal(
   title,
@@ -1662,7 +2370,6 @@ function showModal(
     .classList.add(
       "open"
     );
-
 }
 
 
@@ -1675,13 +2382,12 @@ function closeModal() {
     .classList.remove(
       "open"
     );
-
 }
 
 
-/* =====================================================
+/* ==================================================
    COPIER LIEN
-===================================================== */
+================================================== */
 
 function copyEventLink() {
 
@@ -1689,31 +2395,26 @@ function copyEventLink() {
     .writeText(
       window.location.href
     )
-    .then(
-      () => {
+    .then(() => {
 
-        alert(
-          "✅ Lien copié !"
-        );
+      alert(
+        "✅ Lien copié !"
+      );
 
-      }
-    )
-    .catch(
-      () => {
+    })
+    .catch(() => {
 
-        alert(
-          "Copiez manuellement le lien affiché."
-        );
+      alert(
+        "Copiez manuellement le lien affiché."
+      );
 
-      }
-    );
-
+    });
 }
 
 
-/* =====================================================
-   ACCUEIL
-===================================================== */
+/* ==================================================
+   RETOUR ACCUEIL
+================================================== */
 
 function goHome() {
 
@@ -1743,38 +2444,32 @@ function goHome() {
 
 
   loadEvents();
-
 }
 
 
-/* =====================================================
+/* ==================================================
    UTILITAIRES
-===================================================== */
+================================================== */
 
-function formatDate(
-  date
-) {
+function formatDate(date) {
 
   if (!date)
     return "";
 
-  const p =
+  const parts =
     date.split("-");
 
   return (
-    p[2] +
+    parts[2] +
     "/" +
-    p[1] +
+    parts[1] +
     "/" +
-    p[0]
+    parts[0]
   );
-
 }
 
 
-function safe(
-  value
-) {
+function safe(value) {
 
   return String(
     value ?? ""
@@ -1799,13 +2494,12 @@ function safe(
       /'/g,
       "&#039;"
     );
-
 }
 
 
-/* =====================================================
+/* ==================================================
    DEMARRAGE
-===================================================== */
+================================================== */
 
 async function startApp() {
 
@@ -1816,9 +2510,7 @@ async function startApp() {
 
 
   const code =
-    params.get(
-      "event"
-    );
+    params.get("event");
 
 
   if (code) {
@@ -1832,7 +2524,6 @@ async function startApp() {
     await loadEvents();
 
   }
-
 }
 
 
