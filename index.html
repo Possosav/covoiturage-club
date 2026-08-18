@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Covoiturage du club</title>
+<title>Covoiturage Club</title>
 
 <style>
-
 * {
   box-sizing: border-box;
 }
@@ -16,53 +14,38 @@ body {
   margin: 0;
   background: #f4f6f8;
   color: #17202a;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .container {
-  max-width: 720px;
+  max-width: 700px;
   margin: auto;
   padding: 16px;
 }
-
-/* ================= HEADER ================= */
 
 .header {
   background: linear-gradient(135deg, #1769e0, #4285f4);
   color: white;
   padding: 24px;
-  border-radius: 22px;
+  border-radius: 20px;
   margin-bottom: 16px;
 }
 
 .header h1 {
   margin: 0 0 8px;
-  font-size: 25px;
 }
-
-.header p {
-  margin: 5px 0;
-}
-
-/* ================= CARTES ================= */
 
 .card {
   background: white;
   border-radius: 18px;
   padding: 18px;
   margin-bottom: 15px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 10px rgba(0,0,0,.06);
 }
-
-.card h2 {
-  margin-top: 0;
-}
-
-/* ================= BOUTONS ================= */
 
 button {
   border: 0;
-  border-radius: 12px;
+  border-radius: 11px;
   padding: 12px 15px;
   font-size: 15px;
   font-weight: bold;
@@ -79,117 +62,9 @@ button {
   color: #1769e0;
 }
 
-.danger {
-  background: #ffecec;
-  color: #c62828;
-}
-
 .full {
   width: 100%;
   margin-top: 10px;
-}
-
-/* ================= EVENEMENTS ================= */
-
-.event-card {
-  border: 1px solid #e0e4e8;
-  border-radius: 16px;
-  padding: 16px;
-  margin-top: 12px;
-}
-
-.event-card h3 {
-  margin: 0 0 8px;
-}
-
-.event-info {
-  color: #667085;
-  line-height: 1.6;
-}
-
-.event-buttons {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.event-buttons button {
-  flex: 1;
-}
-
-/* ================= ONGLETS ================= */
-
-.tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.tab {
-  flex: 1;
-  background: white;
-  color: #555;
-}
-
-.tab.active {
-  background: #1769e0;
-  color: white;
-}
-
-/* ================= VOITURES ================= */
-
-.car {
-  border: 1px solid #e0e4e8;
-  border-radius: 16px;
-  padding: 15px;
-  margin-top: 12px;
-}
-
-.car-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.car-name {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.small {
-  font-size: 13px;
-  color: #667085;
-}
-
-.child {
-  background: #f5f6f8;
-  border-radius: 10px;
-  padding: 9px 10px;
-  margin-top: 7px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.available {
-  color: #16865b;
-  font-weight: bold;
-  margin-top: 11px;
-}
-
-.full-car {
-  color: #c62828;
-  font-weight: bold;
-  margin-top: 11px;
-}
-
-/* ================= FORMULAIRE ================= */
-
-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 13px;
-  margin-bottom: 6px;
 }
 
 input {
@@ -198,18 +73,64 @@ input {
   border: 1px solid #ccd2d8;
   border-radius: 10px;
   font-size: 16px;
-  background: white;
 }
 
-.route-box {
-  background: #f7f8fa;
+label {
+  display: block;
+  font-weight: bold;
+  margin-top: 13px;
+  margin-bottom: 6px;
+}
+
+.event {
+  border: 1px solid #ddd;
+  border-radius: 14px;
+  padding: 15px;
+  margin-top: 12px;
+}
+
+.car {
+  border: 1px solid #ddd;
   border-radius: 14px;
   padding: 14px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
-.route-box h3 {
-  margin-top: 0;
+.child {
+  background: #f3f5f7;
+  padding: 9px;
+  border-radius: 9px;
+  margin-top: 7px;
+}
+
+.available {
+  color: #16865b;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 20px;
+  padding: 22px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .actions {
@@ -222,84 +143,40 @@ input {
   flex: 1;
 }
 
-/* ================= MODALE ================= */
-
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  z-index: 1000;
-}
-
-.modal.open {
-  display: flex;
-}
-
-.modal-content {
-  background: white;
-  width: 100%;
-  max-width: 520px;
-  max-height: 90vh;
-  overflow-y: auto;
-  border-radius: 20px;
-  padding: 22px;
-}
-
-.modal-content h2 {
-  margin-top: 0;
-}
-
-.notice {
-  background: #fff8df;
-  border: 1px solid #ead37b;
-  color: #715b00;
-  padding: 12px;
+.route {
+  background: #f6f7f9;
   border-radius: 12px;
-  font-size: 13px;
+  padding: 12px;
+  margin-top: 15px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
   margin-bottom: 15px;
 }
 
-.link-box {
-  word-break: break-all;
-  background: #f4f6f8;
-  border-radius: 10px;
-  padding: 12px;
-  font-size: 13px;
+.tab {
+  flex: 1;
+  background: white;
 }
 
-.empty {
-  text-align: center;
-  color: #667085;
-  padding: 25px 10px;
-}
-
-.back {
-  margin-bottom: 12px;
-}
-
-.footer {
-  text-align: center;
-  color: #667085;
-  font-size: 12px;
-  padding: 20px;
+.tab.active {
+  background: #1769e0;
+  color: white;
 }
 
 .hidden {
-  display: none !important;
+  display: none;
 }
 
-.success {
-  background: #e9f8f0;
-  color: #16704b;
-  padding: 12px;
-  border-radius: 12px;
-  margin-top: 12px;
+.link {
+  word-break: break-all;
+  background: #f4f6f8;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
 }
-
 </style>
 </head>
 
@@ -307,28 +184,20 @@ input {
 
 <div class="container">
 
-<!-- ================================================= -->
 <!-- ACCUEIL -->
-<!-- ================================================= -->
 
-<div id="homePage">
+<div id="home">
 
   <div class="header">
-
     <h1>🚗 Covoiturage du club</h1>
-
-    <p>
-      Organisez simplement les voitures
-      pour les entraînements et les matchs.
-    </p>
-
+    <div>Les trajets des entraînements</div>
   </div>
 
   <div class="card">
 
-    <h2>📅 Mes événements</h2>
+    <h2>📅 Événements</h2>
 
-    <div id="eventList"></div>
+    <div id="events"></div>
 
     <button
       class="primary full"
@@ -343,104 +212,76 @@ input {
 </div>
 
 
-<!-- ================================================= -->
 <!-- EVENEMENT -->
-<!-- ================================================= -->
 
 <div id="eventPage" class="hidden">
 
   <button
-    class="secondary back"
+    class="secondary"
     onclick="goHome()">
 
-    ← Tous les événements
+    ← Retour
 
   </button>
 
   <div class="header">
 
-    <h1 id="eventTitle">
-      Entraînement
-    </h1>
+    <h1 id="eventName"></h1>
 
-    <p id="eventDate"></p>
+    <div id="eventDate"></div>
 
-    <p id="eventTime"></p>
+    <div id="eventTime"></div>
 
   </div>
 
-
-  <!-- TRAJETS -->
 
   <div class="card">
 
-    <h2>📍 Trajets</h2>
+    <h3>🚗 Aller</h3>
 
-    <p>
+    <div id="allerRoute"></div>
 
-      <strong>🚗 Aller</strong><br>
+    <h3>🔄 Retour</h3>
 
-      <span id="eventAller"></span>
-
-    </p>
-
-    <p>
-
-      <strong>🔄 Retour</strong><br>
-
-      <span id="eventRetour"></span>
-
-    </p>
-
-    <button
-      class="secondary full"
-      onclick="openEditEvent()">
-
-      ✏️ Modifier l'événement
-
-    </button>
+    <div id="retourRoute"></div>
 
   </div>
 
-
-  <!-- ONGLETS -->
 
   <div class="tabs">
 
     <button
-      id="tabAller"
+      id="allerTab"
       class="tab active"
       onclick="showDirection('aller')">
 
-      🚗 ALLER
+      🚗 Aller
 
     </button>
 
     <button
-      id="tabRetour"
+      id="retourTab"
       class="tab"
       onclick="showDirection('retour')">
 
-      🔄 RETOUR
+      🔄 Retour
 
     </button>
 
   </div>
 
 
-  <!-- ALLER -->
-
-  <div id="allerSection">
+  <div id="aller">
 
     <div class="card">
 
-      <h2 id="allerTitle"></h2>
+      <h2>🚗 Voitures</h2>
 
       <div id="allerCars"></div>
 
       <button
         class="primary full"
-        onclick="openAddCar('aller')">
+        onclick="openCar('aller')">
 
         🚗 Je propose une voiture
 
@@ -451,21 +292,17 @@ input {
   </div>
 
 
-  <!-- RETOUR -->
-
-  <div
-    id="retourSection"
-    class="hidden">
+  <div id="retour" class="hidden">
 
     <div class="card">
 
-      <h2 id="retourTitle"></h2>
+      <h2>🚗 Voitures</h2>
 
       <div id="retourCars"></div>
 
       <button
         class="primary full"
-        onclick="openAddCar('retour')">
+        onclick="openCar('retour')">
 
         🚗 Je propose une voiture
 
@@ -476,27 +313,18 @@ input {
   </div>
 
 
-  <!-- PARTAGE -->
-
   <div class="card">
 
-    <h2>🔗 Partager cet événement</h2>
-
-    <p class="small">
-
-      Envoyez ce lien dans votre groupe WhatsApp.
-      Il ouvre directement cet événement.
-
-    </p>
+    <h3>🔗 Partager</h3>
 
     <div
       id="eventLink"
-      class="link-box">
+      class="link">
     </div>
 
     <button
       class="secondary full"
-      onclick="copyEventLink()">
+      onclick="copyLink()">
 
       📋 Copier le lien
 
@@ -506,19 +334,10 @@ input {
 
 </div>
 
-
-<div class="footer">
-
-  Covoiturage du club
-
-</div>
-
 </div>
 
 
-<!-- ================================================= -->
 <!-- MODALE -->
-<!-- ================================================= -->
 
 <div
   id="modal"
@@ -538,58 +357,100 @@ input {
 <script>
 
 /* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+"https://dyiwqnnhujxndkqdjznn.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_Nk1KPJ3rtiDSh0yyEl2ynA_6RUpfqqB";
+
+
+/* =====================================================
    VARIABLES
 ===================================================== */
 
-let events = {};
-
-let currentEventCode = null;
+let currentEvent = null;
 
 let currentDirection = "aller";
 
 
 /* =====================================================
-   STOCKAGE
+   REQUETE SUPABASE
 ===================================================== */
 
-function loadData() {
+async function supabaseRequest(
+  table,
+  options = {}
+) {
 
-  try {
+  const url =
+    SUPABASE_URL +
+    "/rest/v1/" +
+    table;
 
-    const saved =
-      localStorage.getItem(
-        "covoiturage_events_v2"
-      );
 
-    if (saved) {
+  const response =
+    await fetch(url, {
 
-      events = JSON.parse(saved);
+      method:
+        options.method || "GET",
 
-    }
+      headers: {
 
-  } catch (error) {
+        "apikey":
+          SUPABASE_KEY,
 
-    console.error(error);
+        "Authorization":
+          "Bearer " +
+          SUPABASE_KEY,
 
-    events = {};
+        "Content-Type":
+          "application/json",
+
+        "Prefer":
+          options.prefer ||
+          "return=representation"
+
+      },
+
+      body:
+        options.body
+          ? JSON.stringify(
+              options.body
+            )
+          : undefined
+
+    });
+
+
+  if (!response.ok) {
+
+    const text =
+      await response.text();
+
+    throw new Error(
+      text ||
+      "Erreur Supabase"
+    );
 
   }
 
-}
+
+  const text =
+    await response.text();
 
 
-function saveData() {
-
-  localStorage.setItem(
-    "covoiturage_events_v2",
-    JSON.stringify(events)
-  );
+  return text
+    ? JSON.parse(text)
+    : [];
 
 }
 
 
 /* =====================================================
-   CODE UNIQUE
+   CODE EVENEMENT
 ===================================================== */
 
 function generateCode() {
@@ -599,26 +460,21 @@ function generateCode() {
 
   let code = "";
 
-  do {
+  for (
+    let i = 0;
+    i < 6;
+    i++
+  ) {
 
-    code = "";
-
-    for (
-      let i = 0;
-      i < 6;
-      i++
-    ) {
-
-      code += chars[
+    code +=
+      chars[
         Math.floor(
           Math.random() *
           chars.length
         )
       ];
 
-    }
-
-  } while (events[code]);
+  }
 
   return code;
 
@@ -626,170 +482,114 @@ function generateCode() {
 
 
 /* =====================================================
-   ACCUEIL
+   AFFICHER LES EVENEMENTS
 ===================================================== */
 
-function showHome() {
-
-  document
-    .getElementById("homePage")
-    .classList.remove("hidden");
-
-  document
-    .getElementById("eventPage")
-    .classList.add("hidden");
-
-  renderEventList();
-
-}
-
-
-function goHome() {
-
-  currentEventCode = null;
-
-  window.history.pushState(
-    {},
-    "",
-    window.location.pathname
-  );
-
-  showHome();
-
-}
-
-
-/* =====================================================
-   LISTE DES EVENEMENTS
-===================================================== */
-
-function renderEventList() {
+async function loadEvents() {
 
   const container =
     document.getElementById(
-      "eventList"
+      "events"
     );
 
-  container.innerHTML = "";
 
-  const codes =
-    Object.keys(events);
-
-
-  if (codes.length === 0) {
-
-    container.innerHTML = `
-
-      <div class="empty">
-
-        Aucun événement pour le moment.
-
-      </div>
-
-    `;
-
-    return;
-
-  }
+  container.innerHTML =
+    "Chargement...";
 
 
-  codes.sort(
-    function(a, b) {
+  try {
 
-      return (
-        events[a].dateISO
-        .localeCompare(
-          events[b].dateISO
-        )
+    const data =
+      await supabaseRequest(
+        "events?select=*&order=date.asc"
       );
 
+
+    container.innerHTML = "";
+
+
+    if (
+      data.length === 0
+    ) {
+
+      container.innerHTML =
+        "<p>Aucun événement.</p>";
+
+      return;
+
     }
-  );
 
 
-  codes.forEach(
-    function(code) {
+    data.forEach(
+      event => {
 
-      const event =
-        events[code];
+        const div =
+          document.createElement(
+            "div"
+          );
 
-      const card =
-        document.createElement(
-          "div"
-        );
-
-      card.className =
-        "event-card";
+        div.className =
+          "event";
 
 
-      card.innerHTML = `
+        div.innerHTML = `
 
-        <h3>
-          🏐 ${escapeHtml(event.name)}
-        </h3>
+          <h3>
+            🏐 ${escapeHtml(event.name)}
+          </h3>
 
-        <div class="event-info">
+          <p>
+            📅 ${formatDate(event.date)}
+            ${
+              event.time
+                ? " à " +
+                  event.time
+                : ""
+            }
+          </p>
 
-          📅 ${escapeHtml(event.date)}
-          <br>
-
-          ${
-            event.time
-              ? "🕐 " +
-                escapeHtml(event.time)
-              : ""
-          }
-
-          <br>
-
-          📍
-          ${escapeHtml(event.allerDepart)}
-          →
-          ${escapeHtml(event.allerArrivee)}
-
-        </div>
-
-
-        <div class="event-buttons">
+          <p>
+            🚗
+            ${escapeHtml(event.aller_depart)}
+            →
+            ${escapeHtml(event.aller_arrivee)}
+          </p>
 
           <button
             class="primary"
             onclick="
-              openEvent('${code}')
+              openEvent('${event.code}')
             ">
 
             Ouvrir
 
           </button>
 
-
-          <button
-            class="danger"
-            onclick="
-              deleteEvent('${code}')
-            ">
-
-            🗑️
-
-          </button>
-
-        </div>
-
-      `;
+        `;
 
 
-      container.appendChild(
-        card
-      );
+        container.appendChild(
+          div
+        );
 
-    }
-  );
+      }
+    );
+
+
+  } catch(error) {
+
+    container.innerHTML =
+      "❌ Impossible de charger les événements.";
+
+    console.error(error);
+
+  }
 
 }
 
 
 /* =====================================================
-   CREATION EVENEMENT
+   CREER EVENEMENT
 ===================================================== */
 
 function openCreateEvent() {
@@ -800,22 +600,13 @@ function openCreateEvent() {
 
     `
 
-    <div class="notice">
-
-      N'importe quel parent peut créer
-      un événement.
-
-    </div>
-
-
     <label>
-      Nom de l'événement
+      Nom
     </label>
 
     <input
       id="newName"
-      value="Entraînement"
-      placeholder="Ex. Entraînement">
+      value="Entraînement">
 
 
     <label>
@@ -836,7 +627,7 @@ function openCreateEvent() {
       type="time">
 
 
-    <div class="route-box">
+    <div class="route">
 
       <h3>🚗 Aller</h3>
 
@@ -845,7 +636,7 @@ function openCreateEvent() {
       </label>
 
       <input
-        id="newAllerDepart"
+        id="allerDepart"
         value="St-Georges-sur-Loire">
 
 
@@ -854,13 +645,13 @@ function openCreateEvent() {
       </label>
 
       <input
-        id="newAllerArrivee"
+        id="allerArrivee"
         value="La Possonnière">
 
     </div>
 
 
-    <div class="route-box">
+    <div class="route">
 
       <h3>🔄 Retour</h3>
 
@@ -869,7 +660,7 @@ function openCreateEvent() {
       </label>
 
       <input
-        id="newRetourDepart"
+        id="retourDepart"
         value="La Possonnière">
 
 
@@ -878,7 +669,7 @@ function openCreateEvent() {
       </label>
 
       <input
-        id="newRetourArrivee"
+        id="retourArrivee"
         value="St-Georges-sur-Loire">
 
     </div>
@@ -894,12 +685,11 @@ function openCreateEvent() {
 
       </button>
 
-
       <button
         class="primary"
         onclick="createEvent()">
 
-        Créer l'événement
+        Créer
 
       </button>
 
@@ -912,11 +702,7 @@ function openCreateEvent() {
 }
 
 
-/* =====================================================
-   CREATION EVENEMENT
-===================================================== */
-
-function createEvent() {
+async function createEvent() {
 
   const name =
     document
@@ -927,7 +713,7 @@ function createEvent() {
       .trim();
 
 
-  const dateInput =
+  const date =
     document
       .getElementById(
         "newDate"
@@ -943,175 +729,111 @@ function createEvent() {
       .value;
 
 
-  const allerDepart =
-    document
-      .getElementById(
-        "newAllerDepart"
-      )
-      .value
-      .trim();
-
-
-  const allerArrivee =
-    document
-      .getElementById(
-        "newAllerArrivee"
-      )
-      .value
-      .trim();
-
-
-  const retourDepart =
-    document
-      .getElementById(
-        "newRetourDepart"
-      )
-      .value
-      .trim();
-
-
-  const retourArrivee =
-    document
-      .getElementById(
-        "newRetourArrivee"
-      )
-      .value
-      .trim();
-
-
-  /* VALIDATION */
-
-  if (!name) {
+  if (!name || !date) {
 
     alert(
-      "Merci d'indiquer le nom de l'événement."
+      "Merci de renseigner le nom et la date."
     );
 
     return;
 
   }
 
-
-  if (!dateInput) {
-
-    alert(
-      "Merci d'indiquer la date."
-    );
-
-    return;
-
-  }
-
-
-  if (!allerDepart) {
-
-    alert(
-      "Merci d'indiquer le départ de l'aller."
-    );
-
-    return;
-
-  }
-
-
-  if (!allerArrivee) {
-
-    alert(
-      "Merci d'indiquer l'arrivée de l'aller."
-    );
-
-    return;
-
-  }
-
-
-  if (!retourDepart) {
-
-    alert(
-      "Merci d'indiquer le départ du retour."
-    );
-
-    return;
-
-  }
-
-
-  if (!retourArrivee) {
-
-    alert(
-      "Merci d'indiquer l'arrivée du retour."
-    );
-
-    return;
-
-  }
-
-
-  /* CREATION */
 
   const code =
     generateCode();
 
 
-  events[code] = {
+  try {
 
-    code: code,
+    const result =
+      await supabaseRequest(
+        "events",
+        {
 
-    name: name,
+          method:
+            "POST",
 
-    dateISO: dateInput,
+          body: {
 
-    date: formatDate(
-      dateInput
-    ),
+            code:
+              code,
 
-    time: time,
+            name:
+              name,
 
-    allerDepart:
-      allerDepart,
+            date:
+              date,
 
-    allerArrivee:
-      allerArrivee,
+            time:
+              time,
 
-    retourDepart:
-      retourDepart,
+            aller_depart:
+              document
+                .getElementById(
+                  "allerDepart"
+                )
+                .value
+                .trim(),
 
-    retourArrivee:
-      retourArrivee,
+            aller_arrivee:
+              document
+                .getElementById(
+                  "allerArrivee"
+                )
+                .value
+                .trim(),
 
-    cars: {
+            retour_depart:
+              document
+                .getElementById(
+                  "retourDepart"
+                )
+                .value
+                .trim(),
 
-      aller: [],
+            retour_arrivee:
+              document
+                .getElementById(
+                  "retourArrivee"
+                )
+                .value
+                .trim()
 
-      retour: []
+          }
+
+        }
+
+      );
+
+
+    if (
+      !result.length
+    ) {
+
+      throw new Error(
+        "L'événement n'a pas été créé."
+      );
 
     }
 
-  };
+
+    closeModal();
 
 
-  /* SAUVEGARDE */
-
-  saveData();
+    openEvent(code);
 
 
-  /* FERMER */
+  } catch(error) {
 
-  closeModal();
+    console.error(error);
 
+    alert(
+      "❌ Impossible de créer l'événement.\n\n" +
+      error.message
+    );
 
-  /* OUVRIR */
-
-  window.history.pushState(
-    {},
-    "",
-    window.location.pathname +
-    "?event=" +
-    code
-  );
-
-
-  openEvent(code);
+  }
 
 }
 
@@ -1120,44 +842,77 @@ function createEvent() {
    OUVRIR EVENEMENT
 ===================================================== */
 
-function openEvent(code) {
+async function openEvent(code) {
 
-  if (!events[code]) {
+  try {
+
+    const data =
+      await supabaseRequest(
+        "events?code=eq." +
+        encodeURIComponent(code) +
+        "&select=*"
+      );
+
+
+    if (
+      !data.length
+    ) {
+
+      alert(
+        "Événement introuvable."
+      );
+
+      return;
+
+    }
+
+
+    currentEvent =
+      data[0];
+
+
+    history.pushState(
+      {},
+      "",
+      "?event=" +
+      code
+    );
+
+
+    document
+      .getElementById(
+        "home"
+      )
+      .classList.add(
+        "hidden"
+      );
+
+
+    document
+      .getElementById(
+        "eventPage"
+      )
+      .classList.remove(
+        "hidden"
+      );
+
+
+    renderEvent();
+
+
+    await loadCars();
+
+
+  } catch(error) {
+
+    console.error(error);
 
     alert(
-      "Cet événement n'existe pas."
+      "Erreur : " +
+      error.message
     );
-
-    showHome();
-
-    return;
 
   }
-
-
-  currentEventCode =
-    code;
-
-
-  document
-    .getElementById(
-      "homePage"
-    )
-    .classList.add(
-      "hidden"
-    );
-
-
-  document
-    .getElementById(
-      "eventPage"
-    )
-    .classList.remove(
-      "hidden"
-    );
-
-
-  renderEvent();
 
 }
 
@@ -1168,17 +923,13 @@ function openEvent(code) {
 
 function renderEvent() {
 
-  const event =
-    events[currentEventCode];
-
-
   document
     .getElementById(
-      "eventTitle"
+      "eventName"
     )
     .textContent =
       "🏐 " +
-      event.name;
+      currentEvent.name;
 
 
   document
@@ -1187,7 +938,9 @@ function renderEvent() {
     )
     .textContent =
       "📅 " +
-      event.date;
+      formatDate(
+        currentEvent.date
+      );
 
 
   document
@@ -1195,50 +948,30 @@ function renderEvent() {
       "eventTime"
     )
     .textContent =
-      event.time
+      currentEvent.time
         ? "🕐 " +
-          event.time
+          currentEvent.time
         : "";
 
 
   document
     .getElementById(
-      "eventAller"
+      "allerRoute"
     )
     .textContent =
-      event.allerDepart +
+      currentEvent.aller_depart +
       " → " +
-      event.allerArrivee;
+      currentEvent.aller_arrivee;
 
 
   document
     .getElementById(
-      "eventRetour"
+      "retourRoute"
     )
     .textContent =
-      event.retourDepart +
+      currentEvent.retour_depart +
       " → " +
-      event.retourArrivee;
-
-
-  document
-    .getElementById(
-      "allerTitle"
-    )
-    .textContent =
-      event.allerDepart +
-      " → " +
-      event.allerArrivee;
-
-
-  document
-    .getElementById(
-      "retourTitle"
-    )
-    .textContent =
-      event.retourDepart +
-      " → " +
-      event.retourArrivee;
+      currentEvent.retour_arrivee;
 
 
   document
@@ -1246,239 +979,7 @@ function renderEvent() {
       "eventLink"
     )
     .textContent =
-      getEventLink();
-
-
-  renderCars(
-    "aller"
-  );
-
-
-  renderCars(
-    "retour"
-  );
-
-}
-
-
-/* =====================================================
-   MODIFICATION EVENEMENT
-===================================================== */
-
-function openEditEvent() {
-
-  const event =
-    events[currentEventCode];
-
-
-  showModal(
-
-    "✏️ Modifier l'événement",
-
-    `
-
-    <label>
-      Nom de l'événement
-    </label>
-
-    <input
-      id="editName"
-      value="${escapeAttribute(event.name)}">
-
-
-    <label>
-      Date
-    </label>
-
-    <input
-      id="editDate"
-      type="date"
-      value="${event.dateISO}">
-
-
-    <label>
-      Heure
-    </label>
-
-    <input
-      id="editTime"
-      type="time"
-      value="${event.time || ""}">
-
-
-    <div class="route-box">
-
-      <h3>🚗 Aller</h3>
-
-      <label>
-        Départ
-      </label>
-
-      <input
-        id="editAllerDepart"
-        value="${escapeAttribute(event.allerDepart)}">
-
-
-      <label>
-        Arrivée
-      </label>
-
-      <input
-        id="editAllerArrivee"
-        value="${escapeAttribute(event.allerArrivee)}">
-
-    </div>
-
-
-    <div class="route-box">
-
-      <h3>🔄 Retour</h3>
-
-      <label>
-        Départ
-      </label>
-
-      <input
-        id="editRetourDepart"
-        value="${escapeAttribute(event.retourDepart)}">
-
-
-      <label>
-        Arrivée
-      </label>
-
-      <input
-        id="editRetourArrivee"
-        value="${escapeAttribute(event.retourArrivee)}">
-
-    </div>
-
-
-    <div class="actions">
-
-      <button
-        class="secondary"
-        onclick="closeModal()">
-
-        Annuler
-
-      </button>
-
-
-      <button
-        class="primary"
-        onclick="saveEventEdit()">
-
-        Enregistrer
-
-      </button>
-
-    </div>
-
-    `
-
-  );
-
-}
-
-
-/* =====================================================
-   ENREGISTRER MODIFICATION
-===================================================== */
-
-function saveEventEdit() {
-
-  const event =
-    events[currentEventCode];
-
-
-  const dateInput =
-    document
-      .getElementById(
-        "editDate"
-      )
-      .value;
-
-
-  if (!dateInput) {
-
-    alert(
-      "Merci d'indiquer une date."
-    );
-
-    return;
-
-  }
-
-
-  event.name =
-    document
-      .getElementById(
-        "editName"
-      )
-      .value
-      .trim();
-
-
-  event.dateISO =
-    dateInput;
-
-
-  event.date =
-    formatDate(
-      dateInput
-    );
-
-
-  event.time =
-    document
-      .getElementById(
-        "editTime"
-      )
-      .value;
-
-
-  event.allerDepart =
-    document
-      .getElementById(
-        "editAllerDepart"
-      )
-      .value
-      .trim();
-
-
-  event.allerArrivee =
-    document
-      .getElementById(
-        "editAllerArrivee"
-      )
-      .value
-      .trim();
-
-
-  event.retourDepart =
-    document
-      .getElementById(
-        "editRetourDepart"
-      )
-      .value
-      .trim();
-
-
-  event.retourArrivee =
-    document
-      .getElementById(
-        "editRetourArrivee"
-      )
-      .value
-      .trim();
-
-
-  saveData();
-
-  closeModal();
-
-  renderEvent();
+      window.location.href;
 
 }
 
@@ -1487,17 +988,34 @@ function saveEventEdit() {
    VOITURES
 ===================================================== */
 
-function renderCars(direction) {
+async function loadCars() {
 
-  const event =
-    events[currentEventCode];
+  const data =
+    await supabaseRequest(
+      "cars?event_id=eq." +
+      currentEvent.id +
+      "&select=*,children(*)&order=created_at.asc"
+    );
 
 
-  const cars =
-    event.cars[
-      direction
-    ];
+  renderCars(
+    "aller",
+    data
+  );
 
+
+  renderCars(
+    "retour",
+    data
+  );
+
+}
+
+
+function renderCars(
+  direction,
+  cars
+) {
 
   const container =
     document.getElementById(
@@ -1509,106 +1027,71 @@ function renderCars(direction) {
   container.innerHTML = "";
 
 
-  if (cars.length === 0) {
+  const filtered =
+    cars.filter(
+      car =>
+        car.direction ===
+        direction
+    );
 
-    container.innerHTML = `
 
-      <div class="empty">
+  if (
+    filtered.length === 0
+  ) {
 
-        Aucune voiture proposée
-        pour le moment.
-
-      </div>
-
-    `;
+    container.innerHTML =
+      "<p>Aucune voiture pour le moment.</p>";
 
     return;
 
   }
 
 
-  cars.forEach(
-    function(car, index) {
+  filtered.forEach(
+    car => {
+
+      const children =
+        car.children || [];
+
 
       const remaining =
         car.places -
-        car.children.length;
+        children.length;
+
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "car";
 
 
       let html = `
 
-        <div class="car">
+        <strong>
+          🚗 ${escapeHtml(car.driver_name)}
+        </strong>
 
-          <div class="car-top">
-
-            <div>
-
-              <div class="car-name">
-
-                🚗
-                ${escapeHtml(car.name)}
-
-              </div>
-
-              <div class="small">
-
-                ${car.places}
-                place(s)
-
-              </div>
-
-            </div>
-
-
-            <button
-              class="danger"
-              onclick="
-                deleteCar(
-                  '${direction}',
-                  ${index}
-                )
-              ">
-
-              🗑️
-
-            </button>
-
-          </div>
+        <div>
+          ${car.places}
+          place(s)
+        </div>
 
       `;
 
 
-      car.children.forEach(
-        function(
-          child,
-          childIndex
-        ) {
+      children.forEach(
+        child => {
 
           html += `
 
             <div class="child">
 
-              <span>
-
-                👦
-                ${escapeHtml(child)}
-
-              </span>
-
-
-              <button
-                class="danger"
-                onclick="
-                  deleteChild(
-                    '${direction}',
-                    ${index},
-                    ${childIndex}
-                  )
-                ">
-
-                ×
-
-              </button>
+              👦
+              ${escapeHtml(child.name)}
 
             </div>
 
@@ -1618,7 +1101,9 @@ function renderCars(direction) {
       );
 
 
-      if (remaining > 0) {
+      if (
+        remaining > 0
+      ) {
 
         html += `
 
@@ -1630,13 +1115,11 @@ function renderCars(direction) {
 
           </div>
 
-
           <button
             class="secondary full"
             onclick="
-              openAddChild(
-                '${direction}',
-                ${index}
+              addChild(
+                '${car.id}'
               )
             ">
 
@@ -1650,7 +1133,10 @@ function renderCars(direction) {
 
         html += `
 
-          <div class="full-car">
+          <div style="
+            color:#c62828;
+            font-weight:bold;
+            margin-top:10px">
 
             🔴 Voiture complète
 
@@ -1661,11 +1147,13 @@ function renderCars(direction) {
       }
 
 
-      html += "</div>";
-
-
-      container.innerHTML +=
+      div.innerHTML =
         html;
+
+
+      container.appendChild(
+        div
+      );
 
     }
   );
@@ -1677,7 +1165,7 @@ function renderCars(direction) {
    AJOUTER VOITURE
 ===================================================== */
 
-function openAddCar(
+function openCar(
   direction
 ) {
 
@@ -1687,25 +1175,25 @@ function openAddCar(
 
   showModal(
 
-    "🚗 Je propose une voiture",
+    "🚗 Proposer une voiture",
 
     `
 
     <label>
-      Nom et prénom
+      Votre nom et prénom
     </label>
 
     <input
-      id="carName"
+      id="driverName"
       placeholder="Ex. Jean Dupont">
 
 
     <label>
-      Nombre de places disponibles
+      Nombre de places
     </label>
 
     <input
-      id="carPlaces"
+      id="places"
       type="number"
       min="1"
       max="8"
@@ -1721,7 +1209,6 @@ function openAddCar(
         Annuler
 
       </button>
-
 
       <button
         class="primary"
@@ -1740,12 +1227,12 @@ function openAddCar(
 }
 
 
-function createCar() {
+async function createCar() {
 
   const name =
     document
       .getElementById(
-        "carName"
+        "driverName"
       )
       .value
       .trim();
@@ -1755,7 +1242,7 @@ function createCar() {
     Number(
       document
         .getElementById(
-          "carPlaces"
+          "places"
         )
         .value
     );
@@ -1773,12 +1260,12 @@ function createCar() {
 
 
   if (
-    !places ||
-    places < 1
+    places < 1 ||
+    places > 8
   ) {
 
     alert(
-      "Merci d'indiquer le nombre de places."
+      "Nombre de places incorrect."
     );
 
     return;
@@ -1786,24 +1273,77 @@ function createCar() {
   }
 
 
-  events[currentEventCode]
-    .cars[currentDirection]
-    .push({
+  /*
+   * Code propriétaire temporaire.
+   * La version suivante l'utilisera
+   * pour protéger la voiture.
+   */
 
-      name: name,
+  const ownerCode =
+    Math.floor(
+      1000 +
+      Math.random() *
+      9000
+    ).toString();
 
-      places: places,
 
-      children: []
+  try {
 
-    });
+    await supabaseRequest(
+      "cars",
+      {
+
+        method:
+          "POST",
+
+        body: {
+
+          event_id:
+            currentEvent.id,
+
+          direction:
+            currentDirection,
+
+          driver_name:
+            name,
+
+          places:
+            places,
+
+          owner_code:
+            ownerCode
+
+        }
+
+      }
+    );
 
 
-  saveData();
+    closeModal();
 
-  closeModal();
 
-  renderEvent();
+    alert(
+      "✅ Votre voiture est créée.\n\n" +
+      "Votre code propriétaire : " +
+      ownerCode +
+      "\n\n" +
+      "Gardez ce code pour pouvoir gérer votre voiture."
+    );
+
+
+    await loadCars();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible d'ajouter la voiture.\n\n" +
+      error.message
+    );
+
+  }
 
 }
 
@@ -1812,9 +1352,8 @@ function createCar() {
    AJOUTER ENFANT
 ===================================================== */
 
-function openAddChild(
-  direction,
-  carIndex
+function addChild(
+  carId
 ) {
 
   showModal(
@@ -1824,7 +1363,7 @@ function openAddChild(
     `
 
     <label>
-      Prénom et nom de l'enfant
+      Prénom et nom
     </label>
 
     <input
@@ -1842,13 +1381,11 @@ function openAddChild(
 
       </button>
 
-
       <button
         class="primary"
         onclick="
           createChild(
-            '${direction}',
-            ${carIndex}
+            '${carId}'
           )
         ">
 
@@ -1865,9 +1402,8 @@ function openAddChild(
 }
 
 
-function createChild(
-  direction,
-  carIndex
+async function createChild(
+  carId
 ) {
 
   const name =
@@ -1879,16 +1415,10 @@ function createChild(
       .trim();
 
 
-  const car =
-    events[currentEventCode]
-      .cars[direction]
-      [carIndex];
-
-
   if (!name) {
 
     alert(
-      "Merci d'indiquer le nom de l'enfant."
+      "Merci d'indiquer le nom."
     );
 
     return;
@@ -1896,221 +1426,41 @@ function createChild(
   }
 
 
-  if (
-    car.children.length >=
-    car.places
-  ) {
+  try {
 
-    alert(
-      "Cette voiture est complète."
-    );
+    await supabaseRequest(
+      "children",
+      {
 
-    return;
+        method:
+          "POST",
 
-  }
+        body: {
 
+          car_id:
+            carId,
 
-  car.children.push(
-    name
-  );
-
-
-  saveData();
-
-  closeModal();
-
-  renderEvent();
-
-}
-
-
-/* =====================================================
-   SUPPRIMER ENFANT
-===================================================== */
-
-function deleteChild(
-  direction,
-  carIndex,
-  childIndex
-) {
-
-  const car =
-    events[currentEventCode]
-      .cars[direction]
-      [carIndex];
-
-
-  const child =
-    car.children[
-      childIndex
-    ];
-
-
-  if (
-    !confirm(
-      "Retirer " +
-      child +
-      " de cette voiture ?"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  car.children.splice(
-    childIndex,
-    1
-  );
-
-
-  saveData();
-
-  renderEvent();
-
-}
-
-
-/* =====================================================
-   SUPPRIMER VOITURE
-===================================================== */
-
-function deleteCar(
-  direction,
-  carIndex
-) {
-
-  const car =
-    events[currentEventCode]
-      .cars[direction]
-      [carIndex];
-
-
-  let message =
-    "⚠️ Supprimer cette voiture ?";
-
-
-  if (
-    car.children.length > 0
-  ) {
-
-    message +=
-      "\n\n" +
-      car.children.length +
-      " enfant(s) sont actuellement inscrits.";
-
-  }
-
-
-  if (
-    !confirm(message)
-  ) {
-
-    return;
-
-  }
-
-
-  events[currentEventCode]
-    .cars[direction]
-    .splice(
-      carIndex,
-      1
-    );
-
-
-  saveData();
-
-  renderEvent();
-
-}
-
-
-/* =====================================================
-   SUPPRIMER EVENEMENT
-===================================================== */
-
-function deleteEvent(
-  code
-) {
-
-  const event =
-    events[code];
-
-
-  const answer =
-    confirm(
-      "⚠️ Supprimer cet événement ?\n\n" +
-      event.name +
-      "\n" +
-      event.date +
-      "\n\n" +
-      "Toutes les voitures seront également supprimées."
-    );
-
-
-  if (!answer) {
-
-    return;
-
-  }
-
-
-  delete events[code];
-
-
-  saveData();
-
-  renderEventList();
-
-}
-
-
-/* =====================================================
-   PARTAGE
-===================================================== */
-
-function getEventLink() {
-
-  return (
-    window.location.origin +
-    window.location.pathname +
-    "?event=" +
-    currentEventCode
-  );
-
-}
-
-
-function copyEventLink() {
-
-  const link =
-    getEventLink();
-
-
-  if (
-    navigator.clipboard
-  ) {
-
-    navigator.clipboard
-      .writeText(link)
-      .then(
-        function() {
-
-          alert(
-            "✅ Lien copié !\n\n" +
-            "Vous pouvez maintenant le coller dans WhatsApp."
-          );
+          name:
+            name
 
         }
-      );
 
-  } else {
+      }
+    );
 
-    prompt(
-      "Copiez ce lien :",
-      link
+
+    closeModal();
+
+    await loadCars();
+
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible d'ajouter l'enfant.\n\n" +
+      error.message
     );
 
   }
@@ -2119,90 +1469,55 @@ function copyEventLink() {
 
 
 /* =====================================================
-   ONGLETS
+   DIRECTION
 ===================================================== */
 
 function showDirection(
   direction
 ) {
 
-  if (
-    direction === "aller"
-  ) {
-
-    document
-      .getElementById(
-        "allerSection"
-      )
-      .classList.remove(
-        "hidden"
-      );
+  currentDirection =
+    direction;
 
 
-    document
-      .getElementById(
-        "retourSection"
-      )
-      .classList.add(
-        "hidden"
-      );
+  document
+    .getElementById(
+      "aller"
+    )
+    .classList.toggle(
+      "hidden",
+      direction !== "aller"
+    );
 
 
-    document
-      .getElementById(
-        "tabAller"
-      )
-      .classList.add(
-        "active"
-      );
+  document
+    .getElementById(
+      "retour"
+    )
+    .classList.toggle(
+      "hidden",
+      direction !== "retour"
+    );
 
 
-    document
-      .getElementById(
-        "tabRetour"
-      )
-      .classList.remove(
-        "active"
-      );
-
-  } else {
-
-    document
-      .getElementById(
-        "allerSection"
-      )
-      .classList.add(
-        "hidden"
-      );
+  document
+    .getElementById(
+      "allerTab"
+    )
+    .classList.toggle(
+      "active",
+      direction === "aller"
+    );
 
 
-    document
-      .getElementById(
-        "retourSection"
-      )
-      .classList.remove(
-        "hidden"
-      );
-
-
-    document
-      .getElementById(
-        "tabAller"
-      )
-      .classList.remove(
-        "active"
-      );
-
-
-    document
-      .getElementById(
-        "tabRetour"
-      )
-      .classList.add(
-        "active"
-      );
-
-  }
+  document
+    .getElementById(
+      "retourTab"
+    )
+    .classList.toggle(
+      "active",
+      direction === "retour"
+    );
 
 }
 
@@ -2257,32 +1572,77 @@ function closeModal() {
 
 
 /* =====================================================
-   DATE
+   COPIER LIEN
+===================================================== */
+
+function copyLink() {
+
+  navigator.clipboard
+    .writeText(
+      window.location.href
+    )
+    .then(
+      () => {
+
+        alert(
+          "✅ Lien copié !"
+        );
+
+      }
+    );
+
+}
+
+
+/* =====================================================
+   RETOUR ACCUEIL
+===================================================== */
+
+function goHome() {
+
+  history.pushState(
+    {},
+    "",
+    window.location.pathname
+  );
+
+
+  document
+    .getElementById(
+      "eventPage"
+    )
+    .classList.add(
+      "hidden"
+    );
+
+
+  document
+    .getElementById(
+      "home"
+    )
+    .classList.remove(
+      "hidden"
+    );
+
+
+  loadEvents();
+
+}
+
+
+/* =====================================================
+   UTILITAIRES
 ===================================================== */
 
 function formatDate(
-  dateString
+  date
 ) {
 
-  if (!dateString) {
-
+  if (!date)
     return "";
 
-  }
-
-
   const parts =
-    dateString.split("-");
-
-
-  if (
-    parts.length !== 3
-  ) {
-
-    return dateString;
-
-  }
-
+    date.split("-");
 
   return (
     parts[2] +
@@ -2294,10 +1654,6 @@ function formatDate(
 
 }
 
-
-/* =====================================================
-   SECURITE
-===================================================== */
 
 function escapeHtml(
   text
@@ -2328,122 +1684,40 @@ function escapeHtml(
 }
 
 
-function escapeAttribute(
-  text
-) {
-
-  return escapeHtml(
-    text
-  );
-
-}
-
-
-/* =====================================================
-   INITIALISATION
-===================================================== */
-
-loadData();
-
-
-/*
-  Pour cette version, on crée
-  automatiquement un événement de démonstration
-  uniquement si aucun événement n'existe.
-*/
-
-if (
-  Object.keys(events).length === 0
-) {
-
-  events["DEMO01"] = {
-
-    code: "DEMO01",
-
-    name: "Entraînement",
-
-    dateISO: "2026-08-17",
-
-    date: "17/08/2026",
-
-    time: "18:30",
-
-    allerDepart:
-      "St-Georges-sur-Loire",
-
-    allerArrivee:
-      "La Possonnière",
-
-    retourDepart:
-      "La Possonnière",
-
-    retourArrivee:
-      "St-Georges-sur-Loire",
-
-    cars: {
-
-      aller: [
-
-        {
-          name:
-            "Jean Dupont",
-
-          places: 3,
-
-          children: [
-
-            "Lucas Martin",
-
-            "Emma Martin"
-
-          ]
-
-        }
-
-      ],
-
-      retour: []
-
-    }
-
-  };
-
-
-  saveData();
-
-}
-
-
 /* =====================================================
    DEMARRAGE
 ===================================================== */
 
-const urlParams =
-  new URLSearchParams(
-    window.location.search
-  );
+async function start() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
 
-const requestedEvent =
-  urlParams.get(
-    "event"
-  );
+  const code =
+    params.get(
+      "event"
+    );
 
 
-if (
-  requestedEvent &&
-  events[requestedEvent]
-) {
+  if (code) {
 
-  openEvent(
-    requestedEvent
-  );
+    await openEvent(
+      code
+    );
 
-} else {
+  } else {
 
-  showHome();
+    await loadEvents();
+
+  }
 
 }
+
+
+start();
 
 </script>
 
