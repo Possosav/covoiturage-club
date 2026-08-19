@@ -6,230 +6,391 @@
 <title>Covoiturage Club</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+:root{
+  --black:#080808;
+  --yellow:#ffd21a;
+  --red:#e21b23;
+  --white:#fff;
+  --light:#f5f5f5;
+  --grey:#6b6b6b;
+  --line:#e3e3e3;
+  --green:#16865b;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f6f8;
-  color: #17202a;
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--light);
+  color:#151515;
 }
 
-.container {
-  max-width: 700px;
-  margin: auto;
-  padding: 16px;
+button,input{font:inherit}
+
+button{
+  border:0;
+  border-radius:12px;
+  padding:12px 15px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.15s ease;
 }
 
-.header {
-  background: linear-gradient(135deg, #1769e0, #4285f4);
-  color: white;
-  padding: 24px;
-  border-radius: 20px;
-  margin-bottom: 16px;
+button:hover{transform:translateY(-1px)}
+button:active{transform:translateY(0)}
+
+.container{
+  max-width:760px;
+  margin:auto;
+  padding:16px;
 }
 
-.header h1 {
-  margin: 0 0 8px;
+.header{
+  position:relative;
+  overflow:hidden;
+  background:var(--black);
+  color:var(--white);
+  padding:22px;
+  border-radius:22px;
+  margin-bottom:16px;
+  border:3px solid var(--yellow);
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
 }
 
-.card {
-  background: white;
-  border-radius: 18px;
-  padding: 18px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.06);
+.header:after{
+  content:"";
+  position:absolute;
+  right:-70px;
+  bottom:-90px;
+  width:190px;
+  height:190px;
+  border:18px solid var(--red);
+  border-radius:50%;
+  opacity:.9;
 }
 
-button {
-  border: 0;
-  border-radius: 11px;
-  padding: 12px 15px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
+.brand{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  position:relative;
+  z-index:1;
 }
 
-.primary {
-  background: #1769e0;
-  color: white;
+.brand-logo{
+  width:82px;
+  height:82px;
+  object-fit:contain;
+  flex:0 0 82px;
+  background:#fff;
+  border-radius:50%;
+  padding:4px;
 }
 
-.secondary {
-  background: #eaf1ff;
-  color: #1769e0;
+.brand-copy h1{
+  margin:0 0 5px;
+  font-size:27px;
+  line-height:1.05;
 }
 
-.danger {
-  background: #ffe8e8;
-  color: #c62828;
+.brand-copy p{
+  margin:0;
+  color:#f4f4f4;
+  font-weight:700;
 }
 
-.full {
-  width: 100%;
-  margin-top: 10px;
+.club-stripe{
+  display:flex;
+  gap:6px;
+  margin-top:16px;
+  position:relative;
+  z-index:1;
 }
 
-input {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccd2d8;
-  border-radius: 10px;
-  font-size: 16px;
+.club-stripe span{
+  height:6px;
+  border-radius:20px;
+  flex:1;
 }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-top: 13px;
-  margin-bottom: 6px;
+.stripe-black{background:#fff}
+.stripe-yellow{background:var(--yellow)}
+.stripe-red{background:var(--red)}
+
+.card{
+  background:var(--white);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:15px;
+  border:1px solid var(--line);
+  box-shadow:0 3px 12px rgba(0,0,0,.05);
 }
 
-.event {
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  padding: 15px;
-  margin-top: 12px;
+.card h2,.card h3{margin-top:0}
+
+.primary{
+  background:var(--yellow);
+  color:var(--black);
+  border:2px solid var(--yellow);
 }
 
-.car {
-  border: 1px solid #ddd;
-  border-radius: 14px;
-  padding: 14px;
-  margin-top: 12px;
+.secondary{
+  background:var(--black);
+  color:var(--white);
+  border:2px solid var(--black);
 }
 
-.child {
-  background: #f3f5f7;
-  padding: 10px;
-  border-radius: 9px;
-  margin-top: 8px;
+.danger{
+  background:#fff0f0;
+  color:#b5141a;
+  border:2px solid #f2b8bb;
 }
 
-.available {
-  color: #16865b;
-  font-weight: bold;
-  margin-top: 10px;
+.full{
+  width:100%;
+  margin-top:10px;
 }
 
-.route {
-  background: #f6f7f9;
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 15px;
+input{
+  width:100%;
+  padding:12px;
+  border:2px solid #d9d9d9;
+  border-radius:11px;
+  font-size:16px;
+  background:#fff;
+  color:#111;
+  outline:none;
 }
 
-.tabs {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 15px;
+input:focus{
+  border-color:var(--yellow);
+  box-shadow:0 0 0 3px rgba(255,210,26,.18);
 }
 
-.tab {
-  flex: 1;
-  background: white;
+label{
+  display:block;
+  font-weight:800;
+  margin-top:13px;
+  margin-bottom:6px;
 }
 
-.tab.active {
-  background: #1769e0;
-  color: white;
+.event,.car{
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:15px;
+  margin-top:12px;
+  background:#fff;
 }
 
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.55);
-  align-items: center;
-  justify-content: center;
-  padding: 18px;
-  z-index: 1000;
+.event{
+  border-left:6px solid var(--yellow);
 }
 
-.modal.open {
-  display: flex;
+.event h3{
+  margin:0 0 8px;
 }
 
-.modal-content {
-  background: white;
-  border-radius: 20px;
-  padding: 22px;
-  width: 100%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
+.car{
+  border-top:4px solid var(--black);
 }
 
-.actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 18px;
+.child{
+  background:#f3f3f3;
+  padding:10px;
+  border-radius:10px;
+  margin-top:8px;
 }
 
-.actions button {
-  flex: 1;
+.available{
+  color:var(--green);
+  font-weight:800;
+  margin-top:10px;
 }
 
-.link {
-  word-break: break-all;
-  background: #f4f6f8;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 13px;
+.route{
+  background:#fafafa;
+  border:1px solid var(--line);
+  border-left:5px solid var(--red);
+  border-radius:13px;
+  padding:12px;
+  margin-top:15px;
 }
 
-.hidden {
-  display: none !important;
+.route.return-route{border-left-color:var(--yellow)}
+
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:15px;
 }
 
-.small {
-  font-size: 13px;
-  color: #667;
+.tab{
+  flex:1;
+  background:#fff;
+  color:var(--black);
+  border:2px solid var(--black);
 }
 
-.top-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 15px;
+.tab.active{
+  background:var(--black);
+  color:var(--yellow);
 }
 
-.top-actions button {
-  flex: 1;
-  min-width: 130px;
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.62);
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:1000;
 }
 
-.edit-row {
-  display: flex;
-  gap: 7px;
-  margin-top: 10px;
+.modal.open{display:flex}
+
+.modal-content{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  width:100%;
+  max-width:520px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-top:7px solid var(--yellow);
 }
 
-.edit-row button {
-  flex: 1;
-  padding: 9px;
-  font-size: 13px;
+.modal-content h2{
+  margin-top:0;
 }
 
-.car-title {
-  font-size: 18px;
-  margin-bottom: 5px;
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
 }
 
-.confirm-text {
-  font-size: 17px;
-  line-height: 1.5;
+.actions button{flex:1}
+
+.link{
+  word-break:break-all;
+  background:#f3f3f3;
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+  border:1px solid var(--line);
 }
 
-.warning {
-  background: #fff5d9;
-  padding: 12px;
-  border-radius: 10px;
-  margin-top: 12px;
+.hidden{display:none !important}
+
+.small{
+  font-size:13px;
+  color:var(--grey);
 }
 
+.top-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:15px;
+  position:relative;
+  z-index:2;
+}
+
+.top-actions button{
+  flex:1;
+  min-width:130px;
+}
+
+.edit-row{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+.edit-row button{
+  flex:1;
+  padding:9px;
+  font-size:13px;
+}
+
+.car-title{
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+.warning{
+  background:#fff8d9;
+  border-left:5px solid var(--yellow);
+  padding:12px;
+  border-radius:10px;
+  margin-top:12px;
+}
+
+.route-line{
+  font-weight:800;
+  line-height:1.5;
+}
+
+.route-label{
+  display:inline-block;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  font-weight:900;
+  margin-bottom:3px;
+}
+
+.car-icon{
+  width:48px;
+  height:34px;
+  vertical-align:middle;
+  margin-right:8px;
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.section-title .mini-icon{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:var(--black);
+  color:var(--yellow);
+  font-size:23px;
+}
+
+.footer-logo{
+  width:55px;
+  height:55px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:50%;
+  padding:3px;
+  vertical-align:middle;
+  margin-right:8px;
+}
+
+.footer{
+  text-align:center;
+  color:#777;
+  font-size:12px;
+  padding:8px 0 20px;
+}
+
+@media(max-width:520px){
+  .container{padding:10px}
+  .header{padding:18px}
+  .brand-logo{width:70px;height:70px;flex-basis:70px}
+  .brand-copy h1{font-size:23px}
+  .actions{flex-direction:column}
+}
 </style>
 </head>
 
@@ -237,219 +398,151 @@ label {
 
 <div class="container">
 
-<!-- ==================================================
-     ACCUEIL
-================================================== -->
-
 <div id="home">
 
   <div class="header">
-    <h1>🚗 Covoiturage du club</h1>
-    <div>Les trajets des entraînements</div>
+    <div class="brand">
+      <img class="brand-logo" src="logo-club.png" alt="Logo du club">
+      <div class="brand-copy">
+        <h1>Covoiturage du club</h1>
+        <p>Les trajets des entraînements</p>
+      </div>
+    </div>
+
+    <div class="club-stripe" aria-hidden="true">
+      <span class="stripe-black"></span>
+      <span class="stripe-yellow"></span>
+      <span class="stripe-red"></span>
+    </div>
   </div>
 
   <div class="card">
-
     <h2>📅 Événements</h2>
+    <div id="events">Chargement...</div>
 
-    <div id="events">
-      Chargement...
-    </div>
-
-    <button
-      class="primary full"
-      onclick="openNewEvent()">
-
+    <button class="primary full" onclick="openNewEvent()">
       ➕ Créer un événement
-
     </button>
-
   </div>
 
 </div>
 
-
-<!-- ==================================================
-     PAGE EVENEMENT
-================================================== -->
 
 <div id="eventPage" class="hidden">
 
-  <button
-    class="secondary"
-    onclick="goHome()">
-
+  <button class="secondary" onclick="goHome()">
     ← Retour aux événements
-
   </button>
 
   <div class="header">
-
-    <h1 id="eventName"></h1>
-
-    <div id="eventDate"></div>
-
-    <div id="eventTime"></div>
-
-    <div class="top-actions">
-
-      <button
-        class="secondary"
-        onclick="openEditEvent()">
-
-        ✏️ Modifier
-
-      </button>
-
-      <button
-        class="danger"
-        onclick="askDeleteEvent1()">
-
-        🗑️ Supprimer
-
-      </button>
-
+    <div class="brand">
+      <img class="brand-logo" src="logo-club.png" alt="Logo du club">
+      <div class="brand-copy">
+        <h1 id="eventName"></h1>
+        <p id="eventDate"></p>
+        <p id="eventTime"></p>
+      </div>
     </div>
 
+    <div class="top-actions">
+      <button class="primary" onclick="openEditEvent()">✏️ Modifier</button>
+      <button class="danger" onclick="askDeleteEvent1()">🗑️ Supprimer</button>
+    </div>
   </div>
-
 
   <div class="card">
+    <div class="section-title">
+      <div class="mini-icon">🚗</div>
+      <h3>Trajets</h3>
+    </div>
 
-    <h3>🚗 Aller</h3>
+    <div class="route">
+      <div class="route-label">Aller</div>
+      <div id="allerRoute" class="route-line"></div>
+    </div>
 
-    <div id="allerRoute"></div>
-
-    <h3>🔄 Retour</h3>
-
-    <div id="retourRoute"></div>
-
+    <div class="route return-route">
+      <div class="route-label">Retour</div>
+      <div id="retourRoute" class="route-line"></div>
+    </div>
   </div>
-
 
   <div class="tabs">
-
-    <button
-      id="allerTab"
-      class="tab active"
-      onclick="changeDirection('aller')">
-
+    <button id="allerTab" class="tab active" onclick="changeDirection('aller')">
       🚗 Aller
-
     </button>
-
-    <button
-      id="retourTab"
-      class="tab"
-      onclick="changeDirection('retour')">
-
+    <button id="retourTab" class="tab" onclick="changeDirection('retour')">
       🔄 Retour
-
     </button>
-
   </div>
 
-
-  <!-- ALLER -->
-
   <div id="allerSection">
-
     <div class="card">
-
-      <h2>🚗 Voitures pour l'aller</h2>
+      <div class="section-title">
+        <div class="mini-icon">🚗</div>
+        <h2>Voitures pour l'aller</h2>
+      </div>
 
       <div id="allerCars"></div>
 
-      <button
-        class="primary full"
-        onclick="openNewCar('aller')">
-
+      <button class="primary full" onclick="openNewCar('aller')">
         🚗 Je propose une voiture
-
       </button>
-
     </div>
-
   </div>
 
-
-  <!-- RETOUR -->
-
   <div id="retourSection" class="hidden">
-
     <div class="card">
-
-      <h2>🔄 Voitures pour le retour</h2>
+      <div class="section-title">
+        <div class="mini-icon">🔄</div>
+        <h2>Voitures pour le retour</h2>
+      </div>
 
       <div id="retourCars"></div>
 
-      <button
-        class="primary full"
-        onclick="openNewCar('retour')">
-
+      <button class="primary full" onclick="openNewCar('retour')">
         🚗 Je propose une voiture
-
       </button>
-
     </div>
-
   </div>
-
 
   <div class="card">
-
     <h3>🔗 Lien de cet événement</h3>
+    <div id="eventLink" class="link"></div>
 
-    <div
-      id="eventLink"
-      class="link">
-    </div>
-
-    <button
-      class="secondary full"
-      onclick="copyEventLink()">
-
+    <button class="secondary full" onclick="copyEventLink()">
       📋 Copier le lien
-
     </button>
-
   </div>
 
 </div>
 
-</div>
 
-
-<!-- ==================================================
-     MODALE
-================================================== -->
-
-<div
-  id="modal"
-  class="modal">
-
+<div id="modal" class="modal">
   <div class="modal-content">
-
     <h2 id="modalTitle"></h2>
-
     <div id="modalBody"></div>
-
   </div>
+</div>
+
+<div class="footer">
+  <img class="footer-logo" src="logo-club.png" alt="Logo du club">
+  Covoiturage du club
+</div>
 
 </div>
 
 
 <script>
-
 /* ==================================================
    SUPABASE
 ================================================== */
 
 const SUPABASE_URL =
-"https://dyiwqnnhujxndkqdjznn.supabase.co";
+  "https://dyiwqnnhujxndkqdjznn.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_Nk1KPJ3rtiDSh0yyEl2ynA_6RUpfqqB";
+  "sb_publishable_Nk1KPJ3rtiDSh0yyEl2ynA_6RUpfqqB";
 
 
 /* ==================================================
@@ -485,7 +578,6 @@ async function apiRequest(endpoint, options = {}) {
   );
 
   if (!response.ok) {
-
     const message = await response.text();
 
     throw new Error(
@@ -511,13 +603,11 @@ function makeCode() {
   let code = "";
 
   for (let i = 0; i < 6; i++) {
-
     code += chars[
       Math.floor(
         Math.random() * chars.length
       )
     ];
-
   }
 
   return code;
@@ -543,10 +633,8 @@ async function loadEvents() {
       );
 
     if (events.length === 0) {
-
       box.innerHTML =
         "<p>Aucun événement pour le moment.</p>";
-
       return;
     }
 
@@ -560,10 +648,7 @@ async function loadEvents() {
       item.className = "event";
 
       item.innerHTML = `
-
-        <h3>
-          🏐 ${safe(event.name)}
-        </h3>
+        <h3>⚽ ${safe(event.name)}</h3>
 
         <p>
           📅 ${formatDate(event.date)}
@@ -575,24 +660,19 @@ async function loadEvents() {
         </p>
 
         <p>
-          🚗
-          ${safe(event.aller_depart)}
+          🚗 ${safe(event.aller_depart)}
           →
           ${safe(event.aller_arrivee)}
         </p>
 
         <button
           class="primary"
-          onclick="openEventPage('${event.code}')">
-
+          onclick="openEventPage('${safeAttr(event.code)}')">
           Ouvrir
-
         </button>
-
       `;
 
       box.appendChild(item);
-
     });
 
   } catch(error) {
@@ -614,90 +694,42 @@ async function loadEvents() {
 function openNewEvent() {
 
   showModal(
-
     "➕ Créer un événement",
-
     `
 
     <label>Nom de l'événement</label>
-
-    <input
-      id="eventNameInput"
-      value="Entraînement">
-
+    <input id="eventNameInput" value="Entraînement">
 
     <label>Date</label>
-
-    <input
-      id="eventDateInput"
-      type="date">
-
+    <input id="eventDateInput" type="date">
 
     <label>Heure</label>
-
-    <input
-      id="eventTimeInput"
-      type="time">
-
+    <input id="eventTimeInput" type="time">
 
     <div class="route">
-
       <h3>🚗 Aller</h3>
 
       <label>Départ</label>
-
-      <input
-        id="allerDeparture"
-        value="St-Georges-sur-Loire">
+      <input id="allerDeparture" value="St-Georges-sur-Loire">
 
       <label>Arrivée</label>
-
-      <input
-        id="allerArrival"
-        value="La Possonnière">
-
+      <input id="allerArrival" value="La Possonnière">
     </div>
 
-
-    <div class="route">
-
+    <div class="route return-route">
       <h3>🔄 Retour</h3>
 
       <label>Départ</label>
-
-      <input
-        id="returnDeparture"
-        value="La Possonnière">
+      <input id="returnDeparture" value="La Possonnière">
 
       <label>Arrivée</label>
-
-      <input
-        id="returnArrival"
-        value="St-Georges-sur-Loire">
-
+      <input id="returnArrival" value="St-Georges-sur-Loire">
     </div>
-
 
     <div class="actions">
-
-      <button
-        class="secondary"
-        onclick="closeModal()">
-
-        Annuler
-
-      </button>
-
-      <button
-        class="primary"
-        onclick="saveNewEvent()">
-
-        Créer
-
-      </button>
-
+      <button class="secondary" onclick="closeModal()">Annuler</button>
+      <button class="primary" onclick="saveNewEvent()">Créer</button>
     </div>
-
     `
   );
 }
@@ -706,40 +738,25 @@ function openNewEvent() {
 async function saveNewEvent() {
 
   const name =
-    document.getElementById(
-      "eventNameInput"
-    ).value.trim();
+    document.getElementById("eventNameInput").value.trim();
 
   const date =
-    document.getElementById(
-      "eventDateInput"
-    ).value;
+    document.getElementById("eventDateInput").value;
 
   const time =
-    document.getElementById(
-      "eventTimeInput"
-    ).value;
+    document.getElementById("eventTimeInput").value;
 
   const allerDeparture =
-    document.getElementById(
-      "allerDeparture"
-    ).value.trim();
+    document.getElementById("allerDeparture").value.trim();
 
   const allerArrival =
-    document.getElementById(
-      "allerArrival"
-    ).value.trim();
+    document.getElementById("allerArrival").value.trim();
 
   const returnDeparture =
-    document.getElementById(
-      "returnDeparture"
-    ).value.trim();
+    document.getElementById("returnDeparture").value.trim();
 
   const returnArrival =
-    document.getElementById(
-      "returnArrival"
-    ).value.trim();
-
+    document.getElementById("returnArrival").value.trim();
 
   if (
     !name ||
@@ -749,14 +766,9 @@ async function saveNewEvent() {
     !returnDeparture ||
     !returnArrival
   ) {
-
-    alert(
-      "Merci de remplir tous les champs obligatoires."
-    );
-
+    alert("Merci de remplir tous les champs obligatoires.");
     return;
   }
-
 
   try {
 
@@ -765,47 +777,26 @@ async function saveNewEvent() {
         "events",
         {
           method: "POST",
-
           body: {
-
             code: makeCode(),
-
             name: name,
-
             date: date,
-
             time: time,
-
-            aller_depart:
-              allerDeparture,
-
-            aller_arrivee:
-              allerArrival,
-
-            retour_depart:
-              returnDeparture,
-
-            retour_arrivee:
-              returnArrival
+            aller_depart: allerDeparture,
+            aller_arrivee: allerArrival,
+            retour_depart: returnDeparture,
+            retour_arrivee: returnArrival
           }
         }
       );
 
-
     if (!result.length) {
-
-      throw new Error(
-        "L'événement n'a pas été créé."
-      );
+      throw new Error("L'événement n'a pas été créé.");
     }
-
 
     closeModal();
 
-    await openEventPage(
-      result[0].code
-    );
-
+    await openEventPage(result[0].code);
 
   } catch(error) {
 
@@ -826,100 +817,62 @@ async function saveNewEvent() {
 function openEditEvent() {
 
   showModal(
-
     "✏️ Modifier l'événement",
-
     `
 
     <label>Nom de l'événement</label>
-
     <input
       id="editEventName"
       value="${safe(currentEvent.name)}">
 
-
     <label>Date</label>
-
     <input
       id="editEventDate"
       type="date"
       value="${safe(currentEvent.date)}">
 
-
     <label>Heure</label>
-
     <input
       id="editEventTime"
       type="time"
       value="${safe(currentEvent.time || "")}">
 
-
     <div class="route">
-
       <h3>🚗 Aller</h3>
 
       <label>Départ</label>
-
       <input
         id="editAllerDeparture"
         value="${safe(currentEvent.aller_depart)}">
 
       <label>Arrivée</label>
-
       <input
         id="editAllerArrival"
         value="${safe(currentEvent.aller_arrivee)}">
-
     </div>
 
-
-    <div class="route">
-
+    <div class="route return-route">
       <h3>🔄 Retour</h3>
 
       <label>Départ</label>
-
       <input
         id="editReturnDeparture"
         value="${safe(currentEvent.retour_depart)}">
 
       <label>Arrivée</label>
-
       <input
         id="editReturnArrival"
         value="${safe(currentEvent.retour_arrivee)}">
-
     </div>
-
 
     <div class="actions">
-
-      <button
-        class="secondary"
-        onclick="closeModal()">
-
-        Annuler
-
-      </button>
-
-      <button
-        class="primary"
-        onclick="confirmEditEvent()">
-
-        Enregistrer
-
-      </button>
-
+      <button class="secondary" onclick="closeModal()">Annuler</button>
+      <button class="primary" onclick="confirmEditEvent()">Enregistrer</button>
     </div>
-
     `
   );
 }
 
-
-/* ==================================================
-   CONFIRMATION MODIFICATION EVENEMENT
-================================================== */
 
 function confirmEditEvent() {
 
@@ -939,41 +892,26 @@ async function saveEditEvent() {
   const data = {
 
     name:
-      document.getElementById(
-        "editEventName"
-      ).value.trim(),
+      document.getElementById("editEventName").value.trim(),
 
     date:
-      document.getElementById(
-        "editEventDate"
-      ).value,
+      document.getElementById("editEventDate").value,
 
     time:
-      document.getElementById(
-        "editEventTime"
-      ).value,
+      document.getElementById("editEventTime").value,
 
     aller_depart:
-      document.getElementById(
-        "editAllerDeparture"
-      ).value.trim(),
+      document.getElementById("editAllerDeparture").value.trim(),
 
     aller_arrivee:
-      document.getElementById(
-        "editAllerArrival"
-      ).value.trim(),
+      document.getElementById("editAllerArrival").value.trim(),
 
     retour_depart:
-      document.getElementById(
-        "editReturnDeparture"
-      ).value.trim(),
+      document.getElementById("editReturnDeparture").value.trim(),
 
     retour_arrivee:
-      document.getElementById(
-        "editReturnArrival"
-      ).value.trim()
+      document.getElementById("editReturnArrival").value.trim()
   };
-
 
   if (
     !data.name ||
@@ -983,52 +921,36 @@ async function saveEditEvent() {
     !data.retour_depart ||
     !data.retour_arrivee
   ) {
-
-    alert(
-      "Merci de remplir tous les champs."
-    );
-
+    alert("Merci de remplir tous les champs.");
     return;
   }
-
 
   try {
 
     await apiRequest(
       "events?id=eq." +
-      encodeURIComponent(
-        currentEvent.id
-      ),
+      encodeURIComponent(currentEvent.id),
       {
         method: "PATCH",
         body: data
       }
     );
 
-
     closeModal();
-
 
     const updated =
       await apiRequest(
         "events?id=eq." +
-        encodeURIComponent(
-          currentEvent.id
-        ) +
+        encodeURIComponent(currentEvent.id) +
         "&select=*"
       );
 
-
-    currentEvent =
-      updated[0];
-
+    currentEvent = updated[0];
 
     renderEvent();
 
     await loadEvents();
-
     await loadCars();
-
 
   } catch(error) {
 
@@ -1057,46 +979,30 @@ async function openEventPage(code) {
         "&select=*"
       );
 
-
     if (!events.length) {
-
-      alert(
-        "Événement introuvable."
-      );
-
+      alert("Événement introuvable.");
       return;
     }
 
-
-    currentEvent =
-      events[0];
-
+    currentEvent = events[0];
 
     history.pushState(
       {},
       "",
       window.location.pathname +
       "?event=" +
-      encodeURIComponent(
-        currentEvent.code
-      )
+      encodeURIComponent(currentEvent.code)
     );
 
-
-    document
-      .getElementById("home")
+    document.getElementById("home")
       .classList.add("hidden");
 
-
-    document
-      .getElementById("eventPage")
+    document.getElementById("eventPage")
       .classList.remove("hidden");
-
 
     renderEvent();
 
     await loadCars();
-
 
   } catch(error) {
 
@@ -1116,48 +1022,28 @@ async function openEventPage(code) {
 
 function renderEvent() {
 
-  document.getElementById(
-    "eventName"
-  ).textContent =
-    "🏐 " + currentEvent.name;
+  document.getElementById("eventName").textContent =
+    "⚽ " + currentEvent.name;
 
+  document.getElementById("eventDate").textContent =
+    "📅 " + formatDate(currentEvent.date);
 
-  document.getElementById(
-    "eventDate"
-  ).textContent =
-    "📅 " +
-    formatDate(
-      currentEvent.date
-    );
-
-
-  document.getElementById(
-    "eventTime"
-  ).textContent =
+  document.getElementById("eventTime").textContent =
     currentEvent.time
       ? "🕐 " + currentEvent.time
       : "";
 
-
-  document.getElementById(
-    "allerRoute"
-  ).textContent =
+  document.getElementById("allerRoute").textContent =
     currentEvent.aller_depart +
     " → " +
     currentEvent.aller_arrivee;
 
-
-  document.getElementById(
-    "retourRoute"
-  ).textContent =
+  document.getElementById("retourRoute").textContent =
     currentEvent.retour_depart +
     " → " +
     currentEvent.retour_arrivee;
 
-
-  document.getElementById(
-    "eventLink"
-  ).textContent =
+  document.getElementById("eventLink").textContent =
     window.location.href;
 }
 
@@ -1171,39 +1057,23 @@ async function loadCars() {
   const cars =
     await apiRequest(
       "cars?event_id=eq." +
-      encodeURIComponent(
-        currentEvent.id
-      ) +
+      encodeURIComponent(currentEvent.id) +
       "&select=*&order=created_at.asc"
     );
 
-
   const children =
-    await apiRequest(
-      "children?select=*"
-    );
-
+    await apiRequest("children?select=*");
 
   cars.forEach(car => {
 
     car.children =
       children.filter(
-        child =>
-          child.car_id === car.id
+        child => child.car_id === car.id
       );
-
   });
 
-
-  renderCars(
-    "aller",
-    cars
-  );
-
-  renderCars(
-    "retour",
-    cars
-  );
+  renderCars("aller", cars);
+  renderCars("retour", cars);
 }
 
 
@@ -1211,69 +1081,54 @@ async function loadCars() {
    AFFICHER VOITURES
 ================================================== */
 
-function renderCars(
-  direction,
-  cars
-) {
+function renderCars(direction, cars) {
 
   const box =
-    document.getElementById(
-      direction + "Cars"
-    );
-
+    document.getElementById(direction + "Cars");
 
   box.innerHTML = "";
 
-
   const filtered =
-    cars.filter(
-      car =>
-        car.direction === direction
-    );
-
+    cars.filter(car => car.direction === direction);
 
   if (!filtered.length) {
-
     box.innerHTML =
       "<p>Aucune voiture pour le moment.</p>";
-
     return;
   }
 
-
   filtered.forEach(car => {
 
-    const children =
-      car.children || [];
-
+    const children = car.children || [];
 
     const available =
-      car.places -
-      children.length;
-
+      car.places - children.length;
 
     const item =
-      document.createElement(
-        "div"
-      );
+      document.createElement("div");
 
-
-    item.className =
-      "car";
-
+    item.className = "car";
 
     let html = `
 
       <div class="car-title">
-        🚗 <strong>${safe(car.driver_name)}</strong>
+        <svg class="car-icon" viewBox="0 0 120 80" aria-hidden="true">
+          <path d="M18 48h84l-7-21c-2-6-7-10-13-10H38c-6 0-11 4-13 10L18 48Z"
+                fill="#080808"/>
+          <path d="M38 20h44l8 18H30l8-18Z" fill="#ffd21a"/>
+          <rect x="10" y="43" width="100" height="22" rx="9" fill="#080808"/>
+          <circle cx="32" cy="65" r="9" fill="#080808"/>
+          <circle cx="32" cy="65" r="4" fill="#ffd21a"/>
+          <circle cx="88" cy="65" r="9" fill="#080808"/>
+          <circle cx="88" cy="65" r="4" fill="#ffd21a"/>
+          <rect x="14" y="47" width="13" height="5" rx="2" fill="#e21b23"/>
+          <rect x="93" y="47" width="13" height="5" rx="2" fill="#e21b23"/>
+        </svg>
+        <strong>${safe(car.driver_name)}</strong>
       </div>
 
-      <div>
-        ${car.places} place(s)
-      </div>
-
+      <div>${car.places} place(s)</div>
     `;
-
 
     children.forEach(child => {
 
@@ -1287,75 +1142,49 @@ function renderCars(
 
             <button
               class="secondary"
-              onclick="openEditChild(
-                '${child.id}'
-              )">
-
+              onclick="openEditChild('${safeAttr(child.id)}')">
               ✏️ Modifier
-
             </button>
 
             <button
               class="danger"
-              onclick="askDeleteChild1(
-                '${child.id}'
-              )">
-
+              onclick="askDeleteChild1('${safeAttr(child.id)}')">
               🗑️ Supprimer
-
             </button>
 
           </div>
 
         </div>
-
       `;
-
     });
-
 
     if (available > 0) {
 
       html += `
 
         <div class="available">
-
-          🟢
-          ${available}
-          place(s) disponible(s)
-
+          🟢 ${available} place(s) disponible(s)
         </div>
 
         <button
           class="secondary full"
-          onclick="openNewChild(
-            '${car.id}'
-          )">
-
+          onclick="openNewChild('${safeAttr(car.id)}')">
           + Ajouter un enfant
-
         </button>
-
       `;
 
     } else {
 
       html += `
 
-        <div
-          style="
-            margin-top:10px;
-            color:#c62828;
-            font-weight:bold">
-
+        <div style="
+          margin-top:10px;
+          color:#c62828;
+          font-weight:bold">
           🔴 Voiture complète
-
         </div>
-
       `;
-
     }
-
 
     html += `
 
@@ -1363,35 +1192,22 @@ function renderCars(
 
         <button
           class="secondary"
-          onclick="openEditCar(
-            '${car.id}'
-          )">
-
+          onclick="openEditCar('${safeAttr(car.id)}')">
           ✏️ Modifier la voiture
-
         </button>
 
         <button
           class="danger"
-          onclick="askDeleteCar1(
-            '${car.id}'
-          )">
-
+          onclick="askDeleteCar1('${safeAttr(car.id)}')">
           🗑️ Supprimer
-
         </button>
 
       </div>
-
     `;
 
-
-    item.innerHTML =
-      html;
-
+    item.innerHTML = html;
 
     box.appendChild(item);
-
   });
 }
 
@@ -1402,30 +1218,22 @@ function renderCars(
 
 function openNewCar(direction) {
 
-  currentDirection =
-    direction;
-
+  currentDirection = direction;
 
   showModal(
-
     direction === "aller"
       ? "🚗 Voiture pour l'aller"
       : "🔄 Voiture pour le retour",
 
     `
 
-    <label>
-      Nom et prénom du conducteur
-    </label>
+    <label>Nom et prénom du conducteur</label>
 
     <input
       id="driverInput"
       placeholder="Ex. Jean Dupont">
 
-
-    <label>
-      Nombre de places disponibles
-    </label>
+    <label>Nombre de places disponibles</label>
 
     <input
       id="placesInput"
@@ -1434,27 +1242,17 @@ function openNewCar(direction) {
       max="8"
       value="2">
 
-
     <div class="actions">
 
-      <button
-        class="secondary"
-        onclick="closeModal()">
-
+      <button class="secondary" onclick="closeModal()">
         Annuler
-
       </button>
 
-      <button
-        class="primary"
-        onclick="saveNewCar()">
-
+      <button class="primary" onclick="saveNewCar()">
         Ajouter
-
       </button>
 
     </div>
-
     `
   );
 }
@@ -1467,41 +1265,24 @@ function openNewCar(direction) {
 async function saveNewCar() {
 
   const driver =
-    document.getElementById(
-      "driverInput"
-    ).value.trim();
-
+    document.getElementById("driverInput").value.trim();
 
   const places =
     Number(
-      document.getElementById(
-        "placesInput"
-      ).value
+      document.getElementById("placesInput").value
     );
-
 
   if (!driver) {
-
-    alert(
-      "Merci d'indiquer votre nom."
-    );
-
+    alert("Merci d'indiquer votre nom.");
     return;
   }
 
-
-  if (
-    places < 1 ||
-    places > 8
-  ) {
-
+  if (places < 1 || places > 8) {
     alert(
       "Le nombre de places doit être compris entre 1 et 8."
     );
-
     return;
   }
-
 
   try {
 
@@ -1509,29 +1290,18 @@ async function saveNewCar() {
       "cars",
       {
         method: "POST",
-
         body: {
-
-          event_id:
-            currentEvent.id,
-
-          direction:
-            currentDirection,
-
-          driver_name:
-            driver,
-
-          places:
-            places
+          event_id: currentEvent.id,
+          direction: currentDirection,
+          driver_name: driver,
+          places: places
         }
       }
     );
 
-
     closeModal();
 
     await loadCars();
-
 
   } catch(error) {
 
@@ -1560,38 +1330,24 @@ async function openEditCar(carId) {
         "&select=*"
       );
 
-
     if (!cars.length) {
-
-      alert(
-        "Voiture introuvable."
-      );
-
+      alert("Voiture introuvable.");
       return;
     }
 
-
     const car = cars[0];
 
-
     showModal(
-
       "✏️ Modifier la voiture",
-
       `
 
-      <label>
-        Nom et prénom
-      </label>
+      <label>Nom et prénom</label>
 
       <input
         id="editCarDriver"
         value="${safe(car.driver_name)}">
 
-
-      <label>
-        Nombre de places
-      </label>
+      <label>Nombre de places</label>
 
       <input
         id="editCarPlaces"
@@ -1600,37 +1356,25 @@ async function openEditCar(carId) {
         max="8"
         value="${car.places}">
 
-
       <div class="actions">
 
-        <button
-          class="secondary"
-          onclick="closeModal()">
-
+        <button class="secondary" onclick="closeModal()">
           Annuler
-
         </button>
 
         <button
           class="primary"
-          onclick="saveEditCar(
-            '${car.id}'
-          )">
-
+          onclick="saveEditCar('${safeAttr(car.id)}')">
           Enregistrer
-
         </button>
 
       </div>
-
       `
     );
 
   } catch(error) {
 
-    alert(
-      "❌ " + error.message
-    );
+    alert("❌ " + error.message);
   }
 }
 
@@ -1638,37 +1382,26 @@ async function openEditCar(carId) {
 async function saveEditCar(carId) {
 
   const driver =
-    document.getElementById(
-      "editCarDriver"
-    ).value.trim();
-
+    document.getElementById("editCarDriver").value.trim();
 
   const places =
     Number(
-      document.getElementById(
-        "editCarPlaces"
-      ).value
+      document.getElementById("editCarPlaces").value
     );
 
-
   if (!driver || places < 1) {
-
     alert(
       "Merci de renseigner correctement les informations."
     );
-
     return;
   }
-
 
   const ok =
     confirm(
       "Voulez-vous enregistrer les modifications de cette voiture ?"
     );
 
-
   if (!ok) return;
-
 
   try {
 
@@ -1677,23 +1410,16 @@ async function saveEditCar(carId) {
       encodeURIComponent(carId),
       {
         method: "PATCH",
-
         body: {
-
-          driver_name:
-            driver,
-
-          places:
-            places
+          driver_name: driver,
+          places: places
         }
       }
     );
 
-
     closeModal();
 
     await loadCars();
-
 
   } catch(error) {
 
@@ -1714,42 +1440,28 @@ async function saveEditCar(carId) {
 function openNewChild(carId) {
 
   showModal(
-
     "👦 Ajouter un enfant",
-
     `
 
-    <label>
-      Prénom et nom de l'enfant
-    </label>
+    <label>Prénom et nom de l'enfant</label>
 
     <input
       id="childInput"
       placeholder="Ex. Lucas Martin">
 
-
     <div class="actions">
 
-      <button
-        class="secondary"
-        onclick="closeModal()">
-
+      <button class="secondary" onclick="closeModal()">
         Annuler
-
       </button>
 
       <button
         class="primary"
-        onclick="saveNewChild(
-          '${carId}'
-        )">
-
+        onclick="saveNewChild('${safeAttr(carId)}')">
         Ajouter
-
       </button>
 
     </div>
-
     `
   );
 }
@@ -1762,20 +1474,12 @@ function openNewChild(carId) {
 async function saveNewChild(carId) {
 
   const name =
-    document.getElementById(
-      "childInput"
-    ).value.trim();
-
+    document.getElementById("childInput").value.trim();
 
   if (!name) {
-
-    alert(
-      "Merci d'indiquer le prénom et le nom."
-    );
-
+    alert("Merci d'indiquer le prénom et le nom.");
     return;
   }
-
 
   try {
 
@@ -1783,23 +1487,16 @@ async function saveNewChild(carId) {
       "children",
       {
         method: "POST",
-
         body: {
-
-          car_id:
-            carId,
-
-          name:
-            name
+          car_id: carId,
+          name: name
         }
       }
     );
 
-
     closeModal();
 
     await loadCars();
-
 
   } catch(error) {
 
@@ -1817,9 +1514,7 @@ async function saveNewChild(carId) {
    MODIFIER ENFANT
 ================================================== */
 
-async function openEditChild(
-  childId
-) {
+async function openEditChild(childId) {
 
   try {
 
@@ -1830,99 +1525,62 @@ async function openEditChild(
         "&select=*"
       );
 
-
     if (!children.length) {
-
-      alert(
-        "Enfant introuvable."
-      );
-
+      alert("Enfant introuvable.");
       return;
     }
 
-
-    const child =
-      children[0];
-
+    const child = children[0];
 
     showModal(
-
       "✏️ Modifier l'enfant",
-
       `
 
-      <label>
-        Prénom et nom
-      </label>
+      <label>Prénom et nom</label>
 
       <input
         id="editChildName"
         value="${safe(child.name)}">
 
-
       <div class="actions">
 
-        <button
-          class="secondary"
-          onclick="closeModal()">
-
+        <button class="secondary" onclick="closeModal()">
           Annuler
-
         </button>
 
         <button
           class="primary"
-          onclick="saveEditChild(
-            '${child.id}'
-          )">
-
+          onclick="saveEditChild('${safeAttr(child.id)}')">
           Enregistrer
-
         </button>
 
       </div>
-
       `
     );
 
-
   } catch(error) {
 
-    alert(
-      "❌ " + error.message
-    );
+    alert("❌ " + error.message);
   }
 }
 
 
-async function saveEditChild(
-  childId
-) {
+async function saveEditChild(childId) {
 
   const name =
-    document.getElementById(
-      "editChildName"
-    ).value.trim();
-
+    document.getElementById("editChildName").value.trim();
 
   if (!name) {
-
-    alert(
-      "Merci d'indiquer un nom."
-    );
-
+    alert("Merci d'indiquer un nom.");
     return;
   }
-
 
   const ok =
     confirm(
       "Voulez-vous enregistrer cette modification ?"
     );
 
-
   if (!ok) return;
-
 
   try {
 
@@ -1931,20 +1589,15 @@ async function saveEditChild(
       encodeURIComponent(childId),
       {
         method: "PATCH",
-
         body: {
-
-          name:
-            name
+          name: name
         }
       }
     );
 
-
     closeModal();
 
     await loadCars();
-
 
   } catch(error) {
 
@@ -1959,54 +1612,36 @@ async function saveEditChild(
 
 
 /* ==================================================
-   SUPPRESSION ENFANT - CONFIRMATION 1
+   SUPPRESSION ENFANT - DOUBLE CONFIRMATION
 ================================================== */
 
-function askDeleteChild1(
-  childId
-) {
+function askDeleteChild1(childId) {
 
   const first =
     confirm(
       "Voulez-vous vraiment supprimer cet enfant ?"
     );
 
-
   if (!first) return;
 
-
-  askDeleteChild2(
-    childId
-  );
+  askDeleteChild2(childId);
 }
 
 
-/* ==================================================
-   SUPPRESSION ENFANT - CONFIRMATION 2
-================================================== */
-
-function askDeleteChild2(
-  childId
-) {
+function askDeleteChild2(childId) {
 
   const second =
     confirm(
       "⚠️ Attention : cette suppression est définitive.\n\nÊtes-vous absolument sûr de vouloir supprimer cet enfant ?"
     );
 
-
   if (!second) return;
 
-
-  deleteChild(
-    childId
-  );
+  deleteChild(childId);
 }
 
 
-async function deleteChild(
-  childId
-) {
+async function deleteChild(childId) {
 
   try {
 
@@ -2019,9 +1654,7 @@ async function deleteChild(
       }
     );
 
-
     await loadCars();
-
 
   } catch(error) {
 
@@ -2036,61 +1669,38 @@ async function deleteChild(
 
 
 /* ==================================================
-   SUPPRESSION VOITURE - CONFIRMATION 1
+   SUPPRESSION VOITURE - DOUBLE CONFIRMATION
 ================================================== */
 
-function askDeleteCar1(
-  carId
-) {
+function askDeleteCar1(carId) {
 
   const first =
     confirm(
       "Voulez-vous vraiment supprimer cette voiture ?"
     );
 
-
   if (!first) return;
 
-
-  askDeleteCar2(
-    carId
-  );
+  askDeleteCar2(carId);
 }
 
 
-/* ==================================================
-   SUPPRESSION VOITURE - CONFIRMATION 2
-================================================== */
-
-function askDeleteCar2(
-  carId
-) {
+function askDeleteCar2(carId) {
 
   const second =
     confirm(
       "⚠️ Attention : la voiture et les enfants inscrits dedans seront supprimés.\n\nÊtes-vous absolument sûr ?"
     );
 
-
   if (!second) return;
 
-
-  deleteCar(
-    carId
-  );
+  deleteCar(carId);
 }
 
 
-async function deleteCar(
-  carId
-) {
+async function deleteCar(carId) {
 
   try {
-
-    /*
-      On supprime d'abord les enfants
-      puis la voiture.
-    */
 
     await apiRequest(
       "children?car_id=eq." +
@@ -2101,7 +1711,6 @@ async function deleteCar(
       }
     );
 
-
     await apiRequest(
       "cars?id=eq." +
       encodeURIComponent(carId),
@@ -2111,9 +1720,7 @@ async function deleteCar(
       }
     );
 
-
     await loadCars();
-
 
   } catch(error) {
 
@@ -2128,7 +1735,7 @@ async function deleteCar(
 
 
 /* ==================================================
-   SUPPRESSION EVENEMENT - CONFIRMATION 1
+   SUPPRESSION EVENEMENT - DOUBLE CONFIRMATION
 ================================================== */
 
 function askDeleteEvent1() {
@@ -2138,17 +1745,11 @@ function askDeleteEvent1() {
       "Voulez-vous vraiment supprimer cet événement ?"
     );
 
-
   if (!first) return;
-
 
   askDeleteEvent2();
 }
 
-
-/* ==================================================
-   SUPPRESSION EVENEMENT - CONFIRMATION 2
-================================================== */
 
 function askDeleteEvent2() {
 
@@ -2157,9 +1758,7 @@ function askDeleteEvent2() {
       "⚠️ Attention : cet événement, ses voitures et les enfants inscrits seront supprimés.\n\nÊtes-vous absolument sûr ?"
     );
 
-
   if (!second) return;
-
 
   deleteEvent();
 }
@@ -2173,29 +1772,14 @@ async function deleteEvent() {
 
   try {
 
-    /*
-      On récupère les voitures
-      de l'événement.
-    */
-
     const cars =
       await apiRequest(
         "cars?event_id=eq." +
-        encodeURIComponent(
-          currentEvent.id
-        ) +
+        encodeURIComponent(currentEvent.id) +
         "&select=id"
       );
 
-
-    /*
-      Suppression des enfants
-      de chaque voiture.
-    */
-
-    for (
-      const car of cars
-    ) {
+    for (const car of cars) {
 
       await apiRequest(
         "children?car_id=eq." +
@@ -2205,44 +1789,27 @@ async function deleteEvent() {
           prefer: "return=minimal"
         }
       );
-
     }
-
-
-    /*
-      Suppression des voitures.
-    */
 
     await apiRequest(
       "cars?event_id=eq." +
-      encodeURIComponent(
-        currentEvent.id
-      ),
+      encodeURIComponent(currentEvent.id),
       {
         method: "DELETE",
         prefer: "return=minimal"
       }
     );
-
-
-    /*
-      Suppression de l'événement.
-    */
 
     await apiRequest(
       "events?id=eq." +
-      encodeURIComponent(
-        currentEvent.id
-      ),
+      encodeURIComponent(currentEvent.id),
       {
         method: "DELETE",
         prefer: "return=minimal"
       }
     );
 
-
     currentEvent = null;
-
 
     history.pushState(
       {},
@@ -2250,24 +1817,15 @@ async function deleteEvent() {
       window.location.pathname
     );
 
-
-    document
-      .getElementById("eventPage")
+    document.getElementById("eventPage")
       .classList.add("hidden");
 
-
-    document
-      .getElementById("home")
+    document.getElementById("home")
       .classList.remove("hidden");
-
 
     await loadEvents();
 
-
-    alert(
-      "✅ L'événement a été supprimé."
-    );
-
+    alert("✅ L'événement a été supprimé.");
 
   } catch(error) {
 
@@ -2285,56 +1843,24 @@ async function deleteEvent() {
    ALLER / RETOUR
 ================================================== */
 
-function changeDirection(
-  direction
-) {
+function changeDirection(direction) {
 
-  currentDirection =
-    direction;
-
+  currentDirection = direction;
 
   const isAller =
     direction === "aller";
 
+  document.getElementById("allerSection")
+    .classList.toggle("hidden", !isAller);
 
-  document
-    .getElementById(
-      "allerSection"
-    )
-    .classList.toggle(
-      "hidden",
-      !isAller
-    );
+  document.getElementById("retourSection")
+    .classList.toggle("hidden", isAller);
 
+  document.getElementById("allerTab")
+    .classList.toggle("active", isAller);
 
-  document
-    .getElementById(
-      "retourSection"
-    )
-    .classList.toggle(
-      "hidden",
-      isAller
-    );
-
-
-  document
-    .getElementById(
-      "allerTab"
-    )
-    .classList.toggle(
-      "active",
-      isAller
-    );
-
-
-  document
-    .getElementById(
-      "retourTab"
-    )
-    .classList.toggle(
-      "active",
-      !isAller
-    );
+  document.getElementById("retourTab")
+    .classList.toggle("active", !isAller);
 }
 
 
@@ -2342,46 +1868,23 @@ function changeDirection(
    MODALE
 ================================================== */
 
-function showModal(
-  title,
-  html
-) {
+function showModal(title, html) {
 
-  document
-    .getElementById(
-      "modalTitle"
-    )
-    .textContent =
-      title;
+  document.getElementById("modalTitle")
+    .textContent = title;
 
+  document.getElementById("modalBody")
+    .innerHTML = html;
 
-  document
-    .getElementById(
-      "modalBody"
-    )
-    .innerHTML =
-      html;
-
-
-  document
-    .getElementById(
-      "modal"
-    )
-    .classList.add(
-      "open"
-    );
+  document.getElementById("modal")
+    .classList.add("open");
 }
 
 
 function closeModal() {
 
-  document
-    .getElementById(
-      "modal"
-    )
-    .classList.remove(
-      "open"
-    );
+  document.getElementById("modal")
+    .classList.remove("open");
 }
 
 
@@ -2392,22 +1895,12 @@ function closeModal() {
 function copyEventLink() {
 
   navigator.clipboard
-    .writeText(
-      window.location.href
-    )
+    .writeText(window.location.href)
     .then(() => {
-
-      alert(
-        "✅ Lien copié !"
-      );
-
+      alert("✅ Lien copié !");
     })
     .catch(() => {
-
-      alert(
-        "Copiez manuellement le lien affiché."
-      );
-
+      alert("Copiez manuellement le lien affiché.");
     });
 }
 
@@ -2424,24 +1917,11 @@ function goHome() {
     window.location.pathname
   );
 
+  document.getElementById("eventPage")
+    .classList.add("hidden");
 
-  document
-    .getElementById(
-      "eventPage"
-    )
-    .classList.add(
-      "hidden"
-    );
-
-
-  document
-    .getElementById(
-      "home"
-    )
-    .classList.remove(
-      "hidden"
-    );
-
+  document.getElementById("home")
+    .classList.remove("hidden");
 
   loadEvents();
 }
@@ -2453,11 +1933,9 @@ function goHome() {
 
 function formatDate(date) {
 
-  if (!date)
-    return "";
+  if (!date) return "";
 
-  const parts =
-    date.split("-");
+  const parts = date.split("-");
 
   return (
     parts[2] +
@@ -2471,29 +1949,19 @@ function formatDate(date) {
 
 function safe(value) {
 
-  return String(
-    value ?? ""
-  )
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-    .replace(
-      /</g,
-      "&lt;"
-    )
-    .replace(
-      />/g,
-      "&gt;"
-    )
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-    .replace(
-      /'/g,
-      "&#039;"
-    );
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function safeAttr(value) {
+  return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'");
 }
 
 
@@ -2508,27 +1976,18 @@ async function startApp() {
       window.location.search
     );
 
-
   const code =
     params.get("event");
 
-
   if (code) {
-
-    await openEventPage(
-      code
-    );
-
+    await openEventPage(code);
   } else {
-
     await loadEvents();
-
   }
 }
 
 
 startApp();
-
 </script>
 
 </body>
