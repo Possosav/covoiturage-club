@@ -1,1 +1,2819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Covoiturage Club</title>
 
+<style>
+*{box-sizing:border-box}
+
+:root{
+  --black:#080808;
+  --yellow:#ffd21a;
+  --yellow-soft:#fff8d6;
+  --red:#e21b23;
+  --red-soft:#fff0f0;
+  --white:#fff;
+  --light:#f5f5f5;
+  --grey:#6b6b6b;
+  --line:#e3e3e3;
+  --green:#16865b;
+}
+
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--light);
+  color:#151515;
+}
+
+button,input{
+  font:inherit;
+}
+
+button{
+  border:0;
+  border-radius:10px;
+  padding:10px 14px;
+  font-weight:800;
+  cursor:pointer;
+  transition:
+    background .15s ease,
+    border-color .15s ease,
+    color .15s ease,
+    transform .15s ease;
+}
+
+button:hover{
+  transform:translateY(-1px);
+}
+
+button:active{
+  transform:translateY(0);
+}
+
+/* ==================================================
+   CONTENEUR
+================================================== */
+
+.container{
+  max-width:760px;
+  margin:auto;
+  padding:16px;
+}
+
+/* ==================================================
+   HEADER
+================================================== */
+
+.header{
+  position:relative;
+  overflow:hidden;
+  background:var(--black);
+  color:var(--white);
+  padding:22px;
+  border-radius:22px;
+  margin-bottom:16px;
+  border:3px solid var(--yellow);
+  box-shadow:0 8px 24px rgba(0,0,0,.12);
+}
+
+.header:after{
+  content:"";
+  position:absolute;
+  right:-70px;
+  bottom:-90px;
+  width:190px;
+  height:190px;
+  border:18px solid var(--red);
+  border-radius:50%;
+  opacity:.9;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:15px;
+  position:relative;
+  z-index:1;
+}
+
+.brand-logo{
+  width:82px;
+  height:82px;
+  object-fit:contain;
+  flex:0 0 82px;
+  background:#fff;
+  border-radius:50%;
+  padding:4px;
+}
+
+.brand-copy h1{
+  margin:0 0 5px;
+  font-size:27px;
+  line-height:1.05;
+}
+
+.brand-copy p{
+  margin:0;
+  color:#f4f4f4;
+  font-weight:700;
+}
+
+.club-stripe{
+  display:flex;
+  gap:6px;
+  margin-top:16px;
+  position:relative;
+  z-index:1;
+}
+
+.club-stripe span{
+  height:6px;
+  border-radius:20px;
+  flex:1;
+}
+
+.stripe-black{background:#fff}
+.stripe-yellow{background:var(--yellow)}
+.stripe-red{background:var(--red)}
+
+/* ==================================================
+   CARTES
+================================================== */
+
+.card{
+  background:var(--white);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:15px;
+  border:1px solid var(--line);
+  box-shadow:0 3px 12px rgba(0,0,0,.05);
+}
+
+.card h2,
+.card h3{
+  margin-top:0;
+}
+
+/* ==================================================
+   BOUTONS
+================================================== */
+
+/* Bouton principal */
+.primary{
+  background:var(--yellow);
+  color:var(--black);
+  border:2px solid var(--yellow);
+  box-shadow:none;
+}
+
+.primary:hover{
+  background:#ffe04d;
+  border-color:#ffe04d;
+}
+
+/* Bouton secondaire :
+   beaucoup plus léger que le noir plein */
+.secondary{
+  background:#fff;
+  color:var(--black);
+  border:2px solid #d5d5d5;
+}
+
+.secondary:hover{
+  background:#fafafa;
+  border-color:#999;
+}
+
+/* Bouton retour */
+.secondary.back-button{
+  background:#fff;
+  border-color:#d5d5d5;
+  color:#333;
+  margin-bottom:12px;
+}
+
+.secondary.back-button:hover{
+  border-color:var(--black);
+}
+
+/* Suppression */
+.danger{
+  background:var(--red-soft);
+  color:#b5141a;
+  border:2px solid #f0c4c6;
+}
+
+.danger:hover{
+  background:#ffe3e3;
+  border-color:#e7a5a8;
+}
+
+/* Boutons pleine largeur */
+.full{
+  width:100%;
+  margin-top:10px;
+}
+
+/* ==================================================
+   INPUTS
+================================================== */
+
+input{
+  width:100%;
+  padding:12px;
+  border:2px solid #d9d9d9;
+  border-radius:11px;
+  font-size:16px;
+  background:#fff;
+  color:#111;
+  outline:none;
+}
+
+input:focus{
+  border-color:var(--yellow);
+  box-shadow:0 0 0 3px rgba(255,210,26,.18);
+}
+
+label{
+  display:block;
+  font-weight:800;
+  margin-top:13px;
+  margin-bottom:6px;
+}
+
+/* ==================================================
+   EVENEMENTS
+================================================== */
+
+.event,
+.car{
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:15px;
+  margin-top:12px;
+  background:#fff;
+}
+
+.event{
+  border-left:5px solid var(--yellow);
+}
+
+.event h3{
+  margin:0 0 8px;
+}
+
+.car{
+  border-top:3px solid #ddd;
+}
+
+/* ==================================================
+   ENFANT
+================================================== */
+
+.child{
+  background:#f7f7f7;
+  padding:10px;
+  border-radius:10px;
+  margin-top:8px;
+}
+
+/* ==================================================
+   DISPONIBILITE
+================================================== */
+
+.available{
+  color:var(--green);
+  font-weight:800;
+  margin-top:10px;
+}
+
+/* ==================================================
+   TRAJETS
+================================================== */
+
+.route{
+  background:#fafafa;
+  border:1px solid var(--line);
+  border-left:5px solid var(--red);
+  border-radius:13px;
+  padding:12px;
+  margin-top:15px;
+}
+
+.route.return-route{
+  border-left-color:var(--yellow);
+}
+
+.route-line{
+  font-weight:800;
+  line-height:1.5;
+}
+
+.route-label{
+  display:inline-block;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  font-weight:900;
+  margin-bottom:3px;
+}
+
+/* ==================================================
+   ONGLETS
+================================================== */
+
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.tab{
+  flex:1;
+  background:#fff;
+  color:#444;
+  border:2px solid #ddd;
+}
+
+.tab:hover{
+  border-color:#aaa;
+}
+
+.tab.active{
+  background:var(--black);
+  color:var(--yellow);
+  border-color:var(--black);
+}
+
+/* ==================================================
+   MODALE
+================================================== */
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.62);
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  z-index:1000;
+}
+
+.modal.open{
+  display:flex;
+}
+
+.modal-content{
+  background:#fff;
+  border-radius:20px;
+  padding:22px;
+  width:100%;
+  max-width:520px;
+  max-height:90vh;
+  overflow-y:auto;
+  border-top:7px solid var(--yellow);
+}
+
+.modal-content h2{
+  margin-top:0;
+}
+
+/* ==================================================
+   ACTIONS
+================================================== */
+
+.actions{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+.actions button{
+  flex:1;
+}
+
+/* ==================================================
+   LIEN
+================================================== */
+
+.link{
+  word-break:break-all;
+  background:#f3f3f3;
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+  border:1px solid var(--line);
+}
+
+/* ==================================================
+   GENERAL
+================================================== */
+
+.hidden{
+  display:none !important;
+}
+
+.small{
+  font-size:13px;
+  color:var(--grey);
+}
+
+.top-actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:15px;
+  position:relative;
+  z-index:2;
+}
+
+.top-actions button{
+  flex:1;
+  min-width:130px;
+}
+
+/* ==================================================
+   BOUTONS MODIFICATION
+================================================== */
+
+.edit-row{
+  display:flex;
+  gap:7px;
+  margin-top:10px;
+}
+
+.edit-row button{
+  flex:1;
+  padding:8px 10px;
+  font-size:13px;
+  font-weight:750;
+}
+
+/* ==================================================
+   VOITURE
+================================================== */
+
+.car-title{
+  font-size:18px;
+  margin-bottom:5px;
+}
+
+.car-icon{
+  width:48px;
+  height:34px;
+  vertical-align:middle;
+  margin-right:8px;
+}
+
+/* ==================================================
+   ALERTES
+================================================== */
+
+.warning{
+  background:#fff8d9;
+  border-left:5px solid var(--yellow);
+  padding:12px;
+  border-radius:10px;
+  margin-top:12px;
+}
+
+/* ==================================================
+   TITRES
+================================================== */
+
+.section-title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.section-title .mini-icon{
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:var(--black);
+  color:var(--yellow);
+  font-size:23px;
+}
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+.footer-logo{
+  width:55px;
+  height:55px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:50%;
+  padding:3px;
+  vertical-align:middle;
+  margin-right:8px;
+}
+
+.footer{
+  text-align:center;
+  color:#777;
+  font-size:12px;
+  padding:8px 0 20px;
+}
+
+/* ==================================================
+   MOBILE
+================================================== */
+
+@media(max-width:520px){
+
+  .container{
+    padding:10px;
+  }
+
+  .header{
+    padding:18px;
+  }
+
+  .brand-logo{
+    width:70px;
+    height:70px;
+    flex-basis:70px;
+  }
+
+  .brand-copy h1{
+    font-size:23px;
+  }
+
+  .actions{
+    flex-direction:column;
+  }
+
+  .top-actions{
+    flex-direction:column;
+  }
+
+  .top-actions button{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div id="home">
+
+  <div class="header">
+
+    <div class="brand">
+
+      <img
+        class="brand-logo"
+        src="logo-club.png"
+        alt="Logo du club">
+
+      <div class="brand-copy">
+
+        <h1>Covoiturage du club</h1>
+
+        <p>Les trajets des entraînements</p>
+
+      </div>
+
+    </div>
+
+    <div class="club-stripe" aria-hidden="true">
+
+      <span class="stripe-black"></span>
+      <span class="stripe-yellow"></span>
+      <span class="stripe-red"></span>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <h2>📅 Événements</h2>
+
+    <div id="events">
+      Chargement...
+    </div>
+
+    <button
+      class="primary full"
+      onclick="openNewEvent()">
+
+      ➕ Créer un événement
+
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<div id="eventPage" class="hidden">
+
+  <button
+    class="secondary back-button"
+    onclick="goHome()">
+
+    ← Retour aux événements
+
+  </button>
+
+
+  <div class="header">
+
+    <div class="brand">
+
+      <img
+        class="brand-logo"
+        src="logo-club.png"
+        alt="Logo du club">
+
+      <div class="brand-copy">
+
+        <h1 id="eventName"></h1>
+
+        <p id="eventDate"></p>
+
+        <p id="eventTime"></p>
+
+      </div>
+
+    </div>
+
+
+    <div class="top-actions">
+
+      <button
+        class="secondary"
+        onclick="openEditEvent()">
+
+        ✏️ Modifier
+
+      </button>
+
+      <button
+        class="danger"
+        onclick="askDeleteEvent1()">
+
+        🗑️ Supprimer
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <div class="section-title">
+
+      <div class="mini-icon">
+        🚗
+      </div>
+
+      <h3>Trajets</h3>
+
+    </div>
+
+
+    <div class="route">
+
+      <div class="route-label">
+        Aller
+      </div>
+
+      <div
+        id="allerRoute"
+        class="route-line">
+      </div>
+
+    </div>
+
+
+    <div class="route return-route">
+
+      <div class="route-label">
+        Retour
+      </div>
+
+      <div
+        id="retourRoute"
+        class="route-line">
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="tabs">
+
+    <button
+      id="allerTab"
+      class="tab active"
+      onclick="changeDirection('aller')">
+
+      🚗 Aller
+
+    </button>
+
+    <button
+      id="retourTab"
+      class="tab"
+      onclick="changeDirection('retour')">
+
+      🔄 Retour
+
+    </button>
+
+  </div>
+
+
+  <div id="allerSection">
+
+    <div class="card">
+
+      <div class="section-title">
+
+        <div class="mini-icon">
+          🚗
+        </div>
+
+        <h2>Voitures pour l'aller</h2>
+
+      </div>
+
+      <div id="allerCars"></div>
+
+      <button
+        class="primary full"
+        onclick="openNewCar('aller')">
+
+        🚗 Je propose une voiture
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div id="retourSection" class="hidden">
+
+    <div class="card">
+
+      <div class="section-title">
+
+        <div class="mini-icon">
+          🔄
+        </div>
+
+        <h2>Voitures pour le retour</h2>
+
+      </div>
+
+      <div id="retourCars"></div>
+
+      <button
+        class="primary full"
+        onclick="openNewCar('retour')">
+
+        🚗 Je propose une voiture
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <div class="card">
+
+    <h3>🔗 Lien de cet événement</h3>
+
+    <div
+      id="eventLink"
+      class="link">
+    </div>
+
+    <button
+      class="secondary full"
+      onclick="copyEventLink()">
+
+      📋 Copier le lien
+
+    </button>
+
+  </div>
+
+</div>
+
+
+
+<div id="modal" class="modal">
+
+  <div class="modal-content">
+
+    <h2 id="modalTitle"></h2>
+
+    <div id="modalBody"></div>
+
+  </div>
+
+</div>
+
+
+<div class="footer">
+
+  <img
+    class="footer-logo"
+    src="logo-club.png"
+    alt="Logo du club">
+
+  Covoiturage du club
+
+</div>
+
+</div>
+
+
+
+<script>
+
+/* ==================================================
+   SUPABASE
+================================================== */
+
+const SUPABASE_URL =
+  "https://dyiwqnnhujxndkqdjznn.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_Nk1KPJ3rtiDSh0yyEl2ynA_6RUpfqqB";
+
+
+/* ==================================================
+   VARIABLES
+================================================== */
+
+let currentEvent = null;
+let currentDirection = "aller";
+
+
+/* ==================================================
+   API SUPABASE
+================================================== */
+
+async function apiRequest(endpoint, options = {}) {
+
+  const response = await fetch(
+    SUPABASE_URL + "/rest/v1/" + endpoint,
+    {
+      method: options.method || "GET",
+
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": options.prefer || "return=representation"
+      },
+
+      body: options.body
+        ? JSON.stringify(options.body)
+        : undefined
+    }
+  );
+
+  if (!response.ok) {
+
+    const message =
+      await response.text();
+
+    throw new Error(
+      message || "Erreur Supabase"
+    );
+  }
+
+  const text =
+    await response.text();
+
+  return text
+    ? JSON.parse(text)
+    : [];
+}
+
+
+/* ==================================================
+   CODE EVENEMENT
+================================================== */
+
+function makeCode() {
+
+  const chars =
+    "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+  let code = "";
+
+  for (let i = 0; i < 6; i++) {
+
+    code += chars[
+      Math.floor(
+        Math.random() * chars.length
+      )
+    ];
+
+  }
+
+  return code;
+}
+
+
+/* ==================================================
+   CHARGER EVENEMENTS
+================================================== */
+
+async function loadEvents() {
+
+  const box =
+    document.getElementById("events");
+
+  box.innerHTML =
+    "Chargement...";
+
+  try {
+
+    const events =
+      await apiRequest(
+        "events?select=*&order=date.asc"
+      );
+
+    if (events.length === 0) {
+
+      box.innerHTML =
+        "<p>Aucun événement pour le moment.</p>";
+
+      return;
+    }
+
+    box.innerHTML = "";
+
+    events.forEach(event => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "event";
+
+      item.innerHTML = `
+
+        <h3>
+          ⚽ ${safe(event.name)}
+        </h3>
+
+        <p>
+          📅 ${formatDate(event.date)}
+          ${
+            event.time
+              ? " à " + safe(event.time)
+              : ""
+          }
+        </p>
+
+        <p>
+          🚗 ${safe(event.aller_depart)}
+          →
+          ${safe(event.aller_arrivee)}
+        </p>
+
+        <button
+          class="primary"
+          onclick="openEventPage('${safeAttr(event.code)}')">
+
+          Ouvrir
+
+        </button>
+      `;
+
+      box.appendChild(item);
+    });
+
+  } catch(error) {
+
+    console.error(error);
+
+    box.innerHTML = `
+
+      <p>
+        ❌ Impossible de charger les événements.
+      </p>
+
+      <p class="small">
+        ${safe(error.message)}
+      </p>
+
+    `;
+  }
+}
+
+
+/* ==================================================
+   CREER EVENEMENT
+================================================== */
+
+function openNewEvent() {
+
+  showModal(
+    "➕ Créer un événement",
+    `
+
+    <label>Nom de l'événement</label>
+
+    <input
+      id="eventNameInput"
+      value="Entraînement">
+
+    <label>Date</label>
+
+    <input
+      id="eventDateInput"
+      type="date">
+
+    <label>Heure</label>
+
+    <input
+      id="eventTimeInput"
+      type="time">
+
+    <div class="route">
+
+      <h3>🚗 Aller</h3>
+
+      <label>Départ</label>
+
+      <input
+        id="allerDeparture"
+        value="St-Georges-sur-Loire">
+
+      <label>Arrivée</label>
+
+      <input
+        id="allerArrival"
+        value="La Possonnière">
+
+    </div>
+
+    <div class="route return-route">
+
+      <h3>🔄 Retour</h3>
+
+      <label>Départ</label>
+
+      <input
+        id="returnDeparture"
+        value="La Possonnière">
+
+      <label>Arrivée</label>
+
+      <input
+        id="returnArrival"
+        value="St-Georges-sur-Loire">
+
+    </div>
+
+    <div class="actions">
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+
+        Annuler
+
+      </button>
+
+      <button
+        class="primary"
+        onclick="saveNewEvent()">
+
+        Créer
+
+      </button>
+
+    </div>
+
+    `
+  );
+}
+
+
+async function saveNewEvent() {
+
+  const name =
+    document
+      .getElementById("eventNameInput")
+      .value
+      .trim();
+
+  const date =
+    document
+      .getElementById("eventDateInput")
+      .value;
+
+  const time =
+    document
+      .getElementById("eventTimeInput")
+      .value;
+
+  const allerDeparture =
+    document
+      .getElementById("allerDeparture")
+      .value
+      .trim();
+
+  const allerArrival =
+    document
+      .getElementById("allerArrival")
+      .value
+      .trim();
+
+  const returnDeparture =
+    document
+      .getElementById("returnDeparture")
+      .value
+      .trim();
+
+  const returnArrival =
+    document
+      .getElementById("returnArrival")
+      .value
+      .trim();
+
+  if (
+    !name ||
+    !date ||
+    !allerDeparture ||
+    !allerArrival ||
+    !returnDeparture ||
+    !returnArrival
+  ) {
+
+    alert(
+      "Merci de remplir tous les champs obligatoires."
+    );
+
+    return;
+  }
+
+  try {
+
+    const result =
+      await apiRequest(
+        "events",
+        {
+          method:"POST",
+
+          body:{
+            code:makeCode(),
+            name:name,
+            date:date,
+            time:time,
+            aller_depart:allerDeparture,
+            aller_arrivee:allerArrival,
+            retour_depart:returnDeparture,
+            retour_arrivee:returnArrival
+          }
+        }
+      );
+
+    if (!result.length) {
+
+      throw new Error(
+        "L'événement n'a pas été créé."
+      );
+    }
+
+    closeModal();
+
+    await openEventPage(
+      result[0].code
+    );
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Erreur lors de la création :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   MODIFIER EVENEMENT
+================================================== */
+
+function openEditEvent() {
+
+  showModal(
+    "✏️ Modifier l'événement",
+    `
+
+    <label>Nom de l'événement</label>
+
+    <input
+      id="editEventName"
+      value="${safe(currentEvent.name)}">
+
+    <label>Date</label>
+
+    <input
+      id="editEventDate"
+      type="date"
+      value="${safe(currentEvent.date)}">
+
+    <label>Heure</label>
+
+    <input
+      id="editEventTime"
+      type="time"
+      value="${safe(currentEvent.time || "")}">
+
+    <div class="route">
+
+      <h3>🚗 Aller</h3>
+
+      <label>Départ</label>
+
+      <input
+        id="editAllerDeparture"
+        value="${safe(currentEvent.aller_depart)}">
+
+      <label>Arrivée</label>
+
+      <input
+        id="editAllerArrival"
+        value="${safe(currentEvent.aller_arrivee)}">
+
+    </div>
+
+    <div class="route return-route">
+
+      <h3>🔄 Retour</h3>
+
+      <label>Départ</label>
+
+      <input
+        id="editReturnDeparture"
+        value="${safe(currentEvent.retour_depart)}">
+
+      <label>Arrivée</label>
+
+      <input
+        id="editReturnArrival"
+        value="${safe(currentEvent.retour_arrivee)}">
+
+    </div>
+
+    <div class="actions">
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+
+        Annuler
+
+      </button>
+
+      <button
+        class="primary"
+        onclick="confirmEditEvent()">
+
+        Enregistrer
+
+      </button>
+
+    </div>
+
+    `
+  );
+}
+
+
+function confirmEditEvent() {
+
+  const ok =
+    confirm(
+      "Voulez-vous enregistrer les modifications de cet événement ?"
+    );
+
+  if (!ok) return;
+
+  saveEditEvent();
+}
+
+
+async function saveEditEvent() {
+
+  const data = {
+
+    name:
+      document
+        .getElementById("editEventName")
+        .value
+        .trim(),
+
+    date:
+      document
+        .getElementById("editEventDate")
+        .value,
+
+    time:
+      document
+        .getElementById("editEventTime")
+        .value,
+
+    aller_depart:
+      document
+        .getElementById("editAllerDeparture")
+        .value
+        .trim(),
+
+    aller_arrivee:
+      document
+        .getElementById("editAllerArrival")
+        .value
+        .trim(),
+
+    retour_depart:
+      document
+        .getElementById("editReturnDeparture")
+        .value
+        .trim(),
+
+    retour_arrivee:
+      document
+        .getElementById("editReturnArrival")
+        .value
+        .trim()
+  };
+
+  if (
+    !data.name ||
+    !data.date ||
+    !data.aller_depart ||
+    !data.aller_arrivee ||
+    !data.retour_depart ||
+    !data.retour_arrivee
+  ) {
+
+    alert(
+      "Merci de remplir tous les champs."
+    );
+
+    return;
+  }
+
+  try {
+
+    await apiRequest(
+      "events?id=eq." +
+      encodeURIComponent(
+        currentEvent.id
+      ),
+      {
+        method:"PATCH",
+        body:data
+      }
+    );
+
+    closeModal();
+
+    const updated =
+      await apiRequest(
+        "events?id=eq." +
+        encodeURIComponent(
+          currentEvent.id
+        ) +
+        "&select=*"
+      );
+
+    currentEvent =
+      updated[0];
+
+    renderEvent();
+
+    await loadEvents();
+    await loadCars();
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de modifier l'événement :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   OUVRIR EVENEMENT
+================================================== */
+
+async function openEventPage(code) {
+
+  try {
+
+    const events =
+      await apiRequest(
+        "events?code=eq." +
+        encodeURIComponent(code) +
+        "&select=*"
+      );
+
+    if (!events.length) {
+
+      alert(
+        "Événement introuvable."
+      );
+
+      return;
+    }
+
+    currentEvent =
+      events[0];
+
+    history.pushState(
+      {},
+      "",
+      window.location.pathname +
+      "?event=" +
+      encodeURIComponent(
+        currentEvent.code
+      )
+    );
+
+    document
+      .getElementById("home")
+      .classList.add("hidden");
+
+    document
+      .getElementById("eventPage")
+      .classList.remove("hidden");
+
+    renderEvent();
+
+    await loadCars();
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible d'ouvrir l'événement :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   AFFICHER EVENEMENT
+================================================== */
+
+function renderEvent() {
+
+  document
+    .getElementById("eventName")
+    .textContent =
+      "⚽ " +
+      currentEvent.name;
+
+  document
+    .getElementById("eventDate")
+    .textContent =
+      "📅 " +
+      formatDate(
+        currentEvent.date
+      );
+
+  document
+    .getElementById("eventTime")
+    .textContent =
+      currentEvent.time
+        ? "🕐 " +
+          currentEvent.time
+        : "";
+
+  document
+    .getElementById("allerRoute")
+    .textContent =
+      currentEvent.aller_depart +
+      " → " +
+      currentEvent.aller_arrivee;
+
+  document
+    .getElementById("retourRoute")
+    .textContent =
+      currentEvent.retour_depart +
+      " → " +
+      currentEvent.retour_arrivee;
+
+  document
+    .getElementById("eventLink")
+    .textContent =
+      window.location.href;
+}
+
+
+/* ==================================================
+   CHARGER VOITURES
+================================================== */
+
+async function loadCars() {
+
+  const cars =
+    await apiRequest(
+      "cars?event_id=eq." +
+      encodeURIComponent(
+        currentEvent.id
+      ) +
+      "&select=*&order=created_at.asc"
+    );
+
+  const children =
+    await apiRequest(
+      "children?select=*"
+    );
+
+  cars.forEach(car => {
+
+    car.children =
+      children.filter(
+        child =>
+          child.car_id === car.id
+      );
+
+  });
+
+  renderCars(
+    "aller",
+    cars
+  );
+
+  renderCars(
+    "retour",
+    cars
+  );
+}
+
+
+/* ==================================================
+   AFFICHER VOITURES
+================================================== */
+
+function renderCars(direction,cars) {
+
+  const box =
+    document.getElementById(
+      direction + "Cars"
+    );
+
+  box.innerHTML = "";
+
+  const filtered =
+    cars.filter(
+      car =>
+        car.direction === direction
+    );
+
+  if (!filtered.length) {
+
+    box.innerHTML =
+      "<p>Aucune voiture pour le moment.</p>";
+
+    return;
+  }
+
+  filtered.forEach(car => {
+
+    const children =
+      car.children || [];
+
+    const available =
+      car.places -
+      children.length;
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "car";
+
+    let html = `
+
+      <div class="car-title">
+
+        <svg
+          class="car-icon"
+          viewBox="0 0 120 80"
+          aria-hidden="true">
+
+          <path
+            d="M18 48h84l-7-21c-2-6-7-10-13-10H38c-6 0-11 4-13 10L18 48Z"
+            fill="#080808"/>
+
+          <path
+            d="M38 20h44l8 18H30l8-18Z"
+            fill="#ffd21a"/>
+
+          <rect
+            x="10"
+            y="43"
+            width="100"
+            height="22"
+            rx="9"
+            fill="#080808"/>
+
+          <circle
+            cx="32"
+            cy="65"
+            r="9"
+            fill="#080808"/>
+
+          <circle
+            cx="32"
+            cy="65"
+            r="4"
+            fill="#ffd21a"/>
+
+          <circle
+            cx="88"
+            cy="65"
+            r="9"
+            fill="#080808"/>
+
+          <circle
+            cx="88"
+            cy="65"
+            r="4"
+            fill="#ffd21a"/>
+
+          <rect
+            x="14"
+            y="47"
+            width="13"
+            height="5"
+            rx="2"
+            fill="#e21b23"/>
+
+          <rect
+            x="93"
+            y="47"
+            width="13"
+            height="5"
+            rx="2"
+            fill="#e21b23"/>
+
+        </svg>
+
+        <strong>
+          ${safe(car.driver_name)}
+        </strong>
+
+      </div>
+
+      <div>
+        ${car.places} place(s)
+      </div>
+    `;
+
+    children.forEach(child => {
+
+      html += `
+
+        <div class="child">
+
+          👦 ${safe(child.name)}
+
+          <div class="edit-row">
+
+            <button
+              class="secondary"
+              onclick="openEditChild('${safeAttr(child.id)}')">
+
+              ✏️ Modifier
+
+            </button>
+
+            <button
+              class="danger"
+              onclick="askDeleteChild1('${safeAttr(child.id)}')">
+
+              🗑️ Supprimer
+
+            </button>
+
+          </div>
+
+        </div>
+      `;
+    });
+
+    if (available > 0) {
+
+      html += `
+
+        <div class="available">
+
+          🟢 ${available}
+          place(s) disponible(s)
+
+        </div>
+
+        <button
+          class="secondary full"
+          onclick="openNewChild('${safeAttr(car.id)}')">
+
+          ➕ Ajouter un enfant
+
+        </button>
+
+      `;
+
+    } else {
+
+      html += `
+
+        <div
+          style="
+            margin-top:10px;
+            color:#c62828;
+            font-weight:bold">
+
+          🔴 Voiture complète
+
+        </div>
+
+      `;
+    }
+
+    html += `
+
+      <div class="edit-row">
+
+        <button
+          class="secondary"
+          onclick="openEditCar('${safeAttr(car.id)}')">
+
+          ✏️ Modifier la voiture
+
+        </button>
+
+        <button
+          class="danger"
+          onclick="askDeleteCar1('${safeAttr(car.id)}')">
+
+          🗑️ Supprimer
+
+        </button>
+
+      </div>
+
+    `;
+
+    item.innerHTML =
+      html;
+
+    box.appendChild(
+      item
+    );
+  });
+}
+
+
+/* ==================================================
+   NOUVELLE VOITURE
+================================================== */
+
+function openNewCar(direction) {
+
+  currentDirection =
+    direction;
+
+  showModal(
+
+    direction === "aller"
+      ? "🚗 Voiture pour l'aller"
+      : "🔄 Voiture pour le retour",
+
+    `
+
+    <label>
+      Nom et prénom du conducteur
+    </label>
+
+    <input
+      id="driverInput"
+      placeholder="Ex. Jean Dupont">
+
+    <label>
+      Nombre de places disponibles
+    </label>
+
+    <input
+      id="placesInput"
+      type="number"
+      min="1"
+      max="8"
+      value="2">
+
+    <div class="actions">
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+
+        Annuler
+
+      </button>
+
+      <button
+        class="primary"
+        onclick="saveNewCar()">
+
+        Ajouter
+
+      </button>
+
+    </div>
+
+    `
+  );
+}
+
+
+/* ==================================================
+   ENREGISTRER VOITURE
+================================================== */
+
+async function saveNewCar() {
+
+  const driver =
+    document
+      .getElementById(
+        "driverInput"
+      )
+      .value
+      .trim();
+
+  const places =
+    Number(
+      document
+        .getElementById(
+          "placesInput"
+        )
+        .value
+    );
+
+  if (!driver) {
+
+    alert(
+      "Merci d'indiquer votre nom."
+    );
+
+    return;
+  }
+
+  if (
+    places < 1 ||
+    places > 8
+  ) {
+
+    alert(
+      "Le nombre de places doit être compris entre 1 et 8."
+    );
+
+    return;
+  }
+
+  try {
+
+    await apiRequest(
+      "cars",
+      {
+        method:"POST",
+
+        body:{
+          event_id:
+            currentEvent.id,
+
+          direction:
+            currentDirection,
+
+          driver_name:
+            driver,
+
+          places:
+            places
+        }
+      }
+    );
+
+    closeModal();
+
+    await loadCars();
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible d'ajouter la voiture :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   MODIFIER VOITURE
+================================================== */
+
+async function openEditCar(carId) {
+
+  try {
+
+    const cars =
+      await apiRequest(
+        "cars?id=eq." +
+        encodeURIComponent(carId) +
+        "&select=*"
+      );
+
+    if (!cars.length) {
+
+      alert(
+        "Voiture introuvable."
+      );
+
+      return;
+    }
+
+    const car =
+      cars[0];
+
+    showModal(
+      "✏️ Modifier la voiture",
+      `
+
+      <label>
+        Nom et prénom
+      </label>
+
+      <input
+        id="editCarDriver"
+        value="${safe(car.driver_name)}">
+
+      <label>
+        Nombre de places
+      </label>
+
+      <input
+        id="editCarPlaces"
+        type="number"
+        min="1"
+        max="8"
+        value="${car.places}">
+
+      <div class="actions">
+
+        <button
+          class="secondary"
+          onclick="closeModal()">
+
+          Annuler
+
+        </button>
+
+        <button
+          class="primary"
+          onclick="saveEditCar('${safeAttr(car.id)}')">
+
+          Enregistrer
+
+        </button>
+
+      </div>
+
+      `
+    );
+
+  } catch(error) {
+
+    alert(
+      "❌ " +
+      error.message
+    );
+  }
+}
+
+
+async function saveEditCar(carId) {
+
+  const driver =
+    document
+      .getElementById(
+        "editCarDriver"
+      )
+      .value
+      .trim();
+
+  const places =
+    Number(
+      document
+        .getElementById(
+          "editCarPlaces"
+        )
+        .value
+    );
+
+  if (
+    !driver ||
+    places < 1
+  ) {
+
+    alert(
+      "Merci de renseigner correctement les informations."
+    );
+
+    return;
+  }
+
+  const ok =
+    confirm(
+      "Voulez-vous enregistrer les modifications de cette voiture ?"
+    );
+
+  if (!ok) return;
+
+  try {
+
+    await apiRequest(
+      "cars?id=eq." +
+      encodeURIComponent(carId),
+      {
+        method:"PATCH",
+
+        body:{
+          driver_name:
+            driver,
+
+          places:
+            places
+        }
+      }
+    );
+
+    closeModal();
+
+    await loadCars();
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de modifier la voiture :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   NOUVEL ENFANT
+================================================== */
+
+function openNewChild(carId) {
+
+  showModal(
+    "👦 Ajouter un enfant",
+    `
+
+    <label>
+      Prénom et nom de l'enfant
+    </label>
+
+    <input
+      id="childInput"
+      placeholder="Ex. Lucas Martin">
+
+    <div class="actions">
+
+      <button
+        class="secondary"
+        onclick="closeModal()">
+
+        Annuler
+
+      </button>
+
+      <button
+        class="primary"
+        onclick="saveNewChild('${safeAttr(carId)}')">
+
+        Ajouter
+
+      </button>
+
+    </div>
+
+    `
+  );
+}
+
+
+/* ==================================================
+   ENREGISTRER ENFANT
+================================================== */
+
+async function saveNewChild(carId) {
+
+  const name =
+    document
+      .getElementById(
+        "childInput"
+      )
+      .value
+      .trim();
+
+  if (!name) {
+
+    alert(
+      "Merci d'indiquer le prénom et le nom."
+    );
+
+    return;
+  }
+
+  try {
+
+    await apiRequest(
+      "children",
+      {
+        method:"POST",
+
+        body:{
+          car_id:
+            carId,
+
+          name:
+            name
+        }
+      }
+    );
+
+    closeModal();
+
+    await loadCars();
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible d'ajouter l'enfant :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   MODIFIER ENFANT
+================================================== */
+
+async function openEditChild(childId) {
+
+  try {
+
+    const children =
+      await apiRequest(
+        "children?id=eq." +
+        encodeURIComponent(childId) +
+        "&select=*"
+      );
+
+    if (!children.length) {
+
+      alert(
+        "Enfant introuvable."
+      );
+
+      return;
+    }
+
+    const child =
+      children[0];
+
+    showModal(
+      "✏️ Modifier l'enfant",
+      `
+
+      <label>
+        Prénom et nom
+      </label>
+
+      <input
+        id="editChildName"
+        value="${safe(child.name)}">
+
+      <div class="actions">
+
+        <button
+          class="secondary"
+          onclick="closeModal()">
+
+          Annuler
+
+        </button>
+
+        <button
+          class="primary"
+          onclick="saveEditChild('${safeAttr(child.id)}')">
+
+          Enregistrer
+
+        </button>
+
+      </div>
+
+      `
+    );
+
+  } catch(error) {
+
+    alert(
+      "❌ " +
+      error.message
+    );
+  }
+}
+
+
+async function saveEditChild(childId) {
+
+  const name =
+    document
+      .getElementById(
+        "editChildName"
+      )
+      .value
+      .trim();
+
+  if (!name) {
+
+    alert(
+      "Merci d'indiquer un nom."
+    );
+
+    return;
+  }
+
+  const ok =
+    confirm(
+      "Voulez-vous enregistrer cette modification ?"
+    );
+
+  if (!ok) return;
+
+  try {
+
+    await apiRequest(
+      "children?id=eq." +
+      encodeURIComponent(childId),
+      {
+        method:"PATCH",
+
+        body:{
+          name:
+            name
+        }
+      }
+    );
+
+    closeModal();
+
+    await loadCars();
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de modifier l'enfant :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   SUPPRESSION ENFANT
+================================================== */
+
+function askDeleteChild1(childId) {
+
+  const first =
+    confirm(
+      "Voulez-vous vraiment supprimer cet enfant ?"
+    );
+
+  if (!first) return;
+
+  askDeleteChild2(
+    childId
+  );
+}
+
+
+function askDeleteChild2(childId) {
+
+  const second =
+    confirm(
+      "⚠️ Attention : cette suppression est définitive.\n\nÊtes-vous absolument sûr de vouloir supprimer cet enfant ?"
+    );
+
+  if (!second) return;
+
+  deleteChild(
+    childId
+  );
+}
+
+
+async function deleteChild(childId) {
+
+  try {
+
+    await apiRequest(
+      "children?id=eq." +
+      encodeURIComponent(childId),
+      {
+        method:"DELETE",
+        prefer:"return=minimal"
+      }
+    );
+
+    await loadCars();
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de supprimer l'enfant :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   SUPPRESSION VOITURE
+================================================== */
+
+function askDeleteCar1(carId) {
+
+  const first =
+    confirm(
+      "Voulez-vous vraiment supprimer cette voiture ?"
+    );
+
+  if (!first) return;
+
+  askDeleteCar2(
+    carId
+  );
+}
+
+
+function askDeleteCar2(carId) {
+
+  const second =
+    confirm(
+      "⚠️ Attention : la voiture et les enfants inscrits dedans seront supprimés.\n\nÊtes-vous absolument sûr ?"
+    );
+
+  if (!second) return;
+
+  deleteCar(
+    carId
+  );
+}
+
+
+async function deleteCar(carId) {
+
+  try {
+
+    await apiRequest(
+      "children?car_id=eq." +
+      encodeURIComponent(carId),
+      {
+        method:"DELETE",
+        prefer:"return=minimal"
+      }
+    );
+
+    await apiRequest(
+      "cars?id=eq." +
+      encodeURIComponent(carId),
+      {
+        method:"DELETE",
+        prefer:"return=minimal"
+      }
+    );
+
+    await loadCars();
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de supprimer la voiture :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   SUPPRESSION EVENEMENT
+================================================== */
+
+function askDeleteEvent1() {
+
+  const first =
+    confirm(
+      "Voulez-vous vraiment supprimer cet événement ?"
+    );
+
+  if (!first) return;
+
+  askDeleteEvent2();
+}
+
+
+function askDeleteEvent2() {
+
+  const second =
+    confirm(
+      "⚠️ Attention : cet événement, ses voitures et les enfants inscrits seront supprimés.\n\nÊtes-vous absolument sûr ?"
+    );
+
+  if (!second) return;
+
+  deleteEvent();
+}
+
+
+/* ==================================================
+   SUPPRIMER EVENEMENT
+================================================== */
+
+async function deleteEvent() {
+
+  try {
+
+    const cars =
+      await apiRequest(
+        "cars?event_id=eq." +
+        encodeURIComponent(
+          currentEvent.id
+        ) +
+        "&select=id"
+      );
+
+    for (const car of cars) {
+
+      await apiRequest(
+        "children?car_id=eq." +
+        encodeURIComponent(
+          car.id
+        ),
+        {
+          method:"DELETE",
+          prefer:"return=minimal"
+        }
+      );
+    }
+
+    await apiRequest(
+      "cars?event_id=eq." +
+      encodeURIComponent(
+        currentEvent.id
+      ),
+      {
+        method:"DELETE",
+        prefer:"return=minimal"
+      }
+    );
+
+    await apiRequest(
+      "events?id=eq." +
+      encodeURIComponent(
+        currentEvent.id
+      ),
+      {
+        method:"DELETE",
+        prefer:"return=minimal"
+      }
+    );
+
+    currentEvent =
+      null;
+
+    history.pushState(
+      {},
+      "",
+      window.location.pathname
+    );
+
+    document
+      .getElementById("eventPage")
+      .classList.add("hidden");
+
+    document
+      .getElementById("home")
+      .classList.remove("hidden");
+
+    await loadEvents();
+
+    alert(
+      "✅ L'événement a été supprimé."
+    );
+
+  } catch(error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Impossible de supprimer l'événement :\n\n" +
+      error.message
+    );
+  }
+}
+
+
+/* ==================================================
+   ALLER / RETOUR
+================================================== */
+
+function changeDirection(direction) {
+
+  currentDirection =
+    direction;
+
+  const isAller =
+    direction === "aller";
+
+  document
+    .getElementById("allerSection")
+    .classList
+    .toggle(
+      "hidden",
+      !isAller
+    );
+
+  document
+    .getElementById("retourSection")
+    .classList
+    .toggle(
+      "hidden",
+      isAller
+    );
+
+  document
+    .getElementById("allerTab")
+    .classList
+    .toggle(
+      "active",
+      isAller
+    );
+
+  document
+    .getElementById("retourTab")
+    .classList
+    .toggle(
+      "active",
+      !isAller
+    );
+}
+
+
+/* ==================================================
+   MODALE
+================================================== */
+
+function showModal(
+  title,
+  html
+) {
+
+  document
+    .getElementById("modalTitle")
+    .textContent =
+      title;
+
+  document
+    .getElementById("modalBody")
+    .innerHTML =
+      html;
+
+  document
+    .getElementById("modal")
+    .classList
+    .add("open");
+}
+
+
+function closeModal() {
+
+  document
+    .getElementById("modal")
+    .classList
+    .remove("open");
+}
+
+
+/* ==================================================
+   COPIER LIEN
+================================================== */
+
+function copyEventLink() {
+
+  navigator.clipboard
+    .writeText(
+      window.location.href
+    )
+    .then(() => {
+
+      alert(
+        "✅ Lien copié !"
+      );
+
+    })
+    .catch(() => {
+
+      alert(
+        "Copiez manuellement le lien affiché."
+      );
+
+    });
+}
+
+
+/* ==================================================
+   RETOUR ACCUEIL
+================================================== */
+
+function goHome() {
+
+  history.pushState(
+    {},
+    "",
+    window.location.pathname
+  );
+
+  document
+    .getElementById("eventPage")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("home")
+    .classList
+    .remove("hidden");
+
+  loadEvents();
+}
+
+
+/* ==================================================
+   UTILITAIRES
+================================================== */
+
+function formatDate(date) {
+
+  if (!date) return "";
+
+  const parts =
+    date.split("-");
+
+  return (
+    parts[2] +
+    "/" +
+    parts[1] +
+    "/" +
+    parts[0]
+  );
+}
+
+
+function safe(value) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+    .replace(
+      /</g,
+      "&lt;"
+    )
+    .replace(
+      />/g,
+      "&gt;"
+    )
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+}
+
+
+function safeAttr(value) {
+
+  return String(
+    value ?? ""
+  )
+    .replace(
+      /\\/g,
+      "\\\\"
+    )
+    .replace(
+      /'/g,
+      "\\'"
+    );
+}
+
+
+/* ==================================================
+   DEMARRAGE
+================================================== */
+
+async function startApp() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const code =
+    params.get("event");
+
+  if (code) {
+
+    await openEventPage(
+      code
+    );
+
+  } else {
+
+    await loadEvents();
+
+  }
+}
+
+
+startApp();
+
+</script>
+
+</body>
+</html>
